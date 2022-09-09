@@ -26,6 +26,9 @@
   </ItemGroup>
   
   <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>F:\SSD Games\Pathfinder Kingmaker\Kingmaker_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
     <Reference Include="SteamVR">
       <HintPath>Libs\SteamVR.dll</HintPath>
     </Reference>

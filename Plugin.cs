@@ -1,4 +1,6 @@
 ﻿using BepInEx;
+using UnityEngine;
+using Kingmaker;
 using Valve.VR;
 
 namespace VRMaker
@@ -22,5 +24,27 @@ namespace VRMaker
             SteamVR.Initialize();
             SteamVR_Settings.instance.pauseGameWhenDashboardVisible = true;
         }
+
+        public void LateUpdate()
+        {
+            if (Input.GetKeyDown(KeyCode.F1))
+            {
+                // switch to first person
+                Camera MyCamera = Game.GetCamera();
+                DummyObject.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
+                MyCamera.transform.parent = DummyObject.transform;
+                Firstperson = true;
+            }
+
+            if (Firstperson)
+            {
+                DummyObject.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
+            }
+
+        }
+
+        GameObject DummyObject = new GameObject();
+        bool Firstperson = false;
     }
+
 }
