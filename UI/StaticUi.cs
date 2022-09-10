@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using Kingmaker;
 
 namespace VRMaker
 {
-    public class UIManager
+    class StaticUi : AttachedUi
     {
-        
+        private void Awake()
+        {
+            //MaterialHelper.MakeGraphicChildrenDrawOnTop(gameObject);
+        }
     }
 }
