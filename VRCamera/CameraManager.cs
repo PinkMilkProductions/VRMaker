@@ -27,6 +27,13 @@ namespace VRMaker
             CurrentCamera.nearClipPlane = NearClipPlaneDistance;
         }
 
+        public static void TurnOffPostProcessing()
+        {
+            Camera CurrentCamera = Game.GetCamera();
+            UnityEngine.PostProcessing.PostProcessingBehaviour PPbehaviour = CurrentCamera.GetComponent<UnityEngine.PostProcessing.PostProcessingBehaviour>();
+            PPbehaviour.enabled = false;
+        }
+
         public enum VRCameraMode
         {
             DemeoLike,

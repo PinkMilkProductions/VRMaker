@@ -18,6 +18,16 @@ namespace VRMaker
         private static void FixNearClipping()
         {
             CameraManager.ReduceNearClipping();
+            //Also test this postprocess disable thing
+            //CameraManager.TurnOffPostProcessing();
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Kingmaker.Visual.GammaAdjustment), "Start")]
+        private static void FixGamma(Kingmaker.Visual.GammaAdjustment __instance)
+        {
+            //Disables Gamma adjustment, temp fix to prevent both eyes having different gamma
+            __instance.enabled = false;
         }
 
         [HarmonyPostfix]
