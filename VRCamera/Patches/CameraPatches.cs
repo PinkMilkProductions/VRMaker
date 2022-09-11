@@ -10,8 +10,10 @@ using Kingmaker;
 
 namespace VRMaker
 {
+    [HarmonyPatch]
     class CameraPatches
     {
-        
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Camera), "Start")]
     }
 }

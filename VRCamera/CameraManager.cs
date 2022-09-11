@@ -15,6 +15,13 @@ namespace VRMaker
             CurrentCameraMode = VRCameraMode.UI;
         }
 
+        public float ReduceNearClipping()
+        {
+            Camera TestCamera = Game.GetCamera();
+            TestCamera.nearClipPlane = TestCamera.nearClipPlane / 10f;
+            return TestCamera.nearClipPlane;
+        }
+
         public enum VRCameraMode
         {
             DemeoLike,

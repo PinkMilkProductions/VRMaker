@@ -42,6 +42,11 @@ namespace VRMaker
                 if (!F1Pressed)
                 {
                     F1Pressed = true;
+
+                    float clipdistance = CameraManagerObj.ReduceNearClipping();
+                    Logs.WriteInfo("new near clipping distance: ");
+                    Logs.WriteInfo(clipdistance);
+
                     Camera MyCamera = Game.GetCamera();
                     // If we are not in firstperson
                     if (CameraManagerObj.CurrentCameraMode != CameraManager.VRCameraMode.FirstPerson)
