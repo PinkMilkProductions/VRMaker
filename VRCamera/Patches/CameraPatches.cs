@@ -14,6 +14,10 @@ namespace VRMaker
     class CameraPatches
     {
         [HarmonyPostfix]
-        [HarmonyPatch(typeof(Camera), "Start")]
+        [HarmonyPatch(typeof(Kingmaker.View.CameraRig), "OnEnable")]
+        private static void FixNearClipping()
+        {
+            CameraManager.ReduceNearClipping();
+        }
     }
 }

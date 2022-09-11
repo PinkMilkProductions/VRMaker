@@ -8,18 +8,23 @@ using Kingmaker;
 
 namespace VRMaker
 {
-    public class CameraManager
+    public static class CameraManager
     {
-        public CameraManager()
+        static CameraManager()
         {
             CurrentCameraMode = VRCameraMode.UI;
+            //Fix near plance clipping for main camera
+            if (Camera.main != null)
+            {
+                Camera.main.nearClipPlane = NearClipPlaneDistance;
+            }
+
         }
 
-        public float ReduceNearClipping()
+        public static void ReduceNearClipping()
         {
-            Camera TestCamera = Game.GetCamera();
-            TestCamera.nearClipPlane = TestCamera.nearClipPlane / 10f;
-            return TestCamera.nearClipPlane;
+            Camera CurrentCamera = Game.GetCamera();
+            CurrentCamera.nearClipPlane = NearClipPlaneDistance;
         }
 
         public enum VRCameraMode
@@ -30,6 +35,8 @@ namespace VRMaker
             UI
         }
 
-        public VRCameraMode CurrentCameraMode;
+        public static VRCameraMode CurrentCameraMode;
+        public static float NearClipPlaneDistance = 0.01f;
     }
+    
 }
