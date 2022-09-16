@@ -27,10 +27,10 @@
   
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>F:\SSD Games\Pathfinder Kingmaker\Kingmaker_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>F:\KingmakerGameLibs\package\lib\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>F:\SSD Games\Pathfinder Kingmaker\Kingmaker_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>F:\KingmakerGameLibs\package\lib\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="SteamVR">
       <HintPath>Libs\SteamVR.dll</HintPath>

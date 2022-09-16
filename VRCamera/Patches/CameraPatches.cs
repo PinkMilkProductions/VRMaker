@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HarmonyLib;
 using UnityEngine;
+using UnityEngine.Profiling;
 using Kingmaker;
 
 
@@ -20,6 +21,7 @@ namespace VRMaker
             CameraManager.ReduceNearClipping();
             //Also test this postprocess disable thing
             //CameraManager.TurnOffPostProcessing();
+            // Start performance profiler
         }
 
         [HarmonyPostfix]
@@ -28,6 +30,17 @@ namespace VRMaker
         {
             //Disables Gamma adjustment, temp fix to prevent both eyes having different gamma
             __instance.enabled = false;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Kingmaker.Visual.Lighting.ClusteredRenderer), "OnPreRender")]
+        private static void FixCulling(Kingmaker.Visual.Lighting.ClusteredRenderer __instance)
+        {
+            //return __instance.m_CullingGroup != null;
+            if (__instance.m_CullingGroup == null)
+            {
+                __instance.OnPreCull();
+            }
         }
 
         [HarmonyPostfix]

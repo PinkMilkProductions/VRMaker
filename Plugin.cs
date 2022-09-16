@@ -2,6 +2,7 @@
 using BepInEx;
 using HarmonyLib;
 using UnityEngine;
+using UnityEditor;
 using Kingmaker;
 using Valve.VR;
 
