@@ -15,7 +15,7 @@ namespace VRMaker
     class CameraPatches
     {
         [HarmonyPostfix]
-        [HarmonyPatch(typeof(Kingmaker.View.CameraRig), "OnEnable")]
+        [HarmonyPatch(typeof(Kingmaker.View.CameraRig), nameof(Kingmaker.View.CameraRig.OnEnable))]
         private static void FixNearClipping()
         {
             CameraManager.ReduceNearClipping();
@@ -25,7 +25,7 @@ namespace VRMaker
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch(typeof(Kingmaker.Visual.GammaAdjustment), "Start")]
+        [HarmonyPatch(typeof(Kingmaker.Visual.GammaAdjustment), nameof(Kingmaker.Visual.GammaAdjustment.Start))]
         private static void FixGamma(Kingmaker.Visual.GammaAdjustment __instance)
         {
             //Disables Gamma adjustment, temp fix to prevent both eyes having different gamma
@@ -33,7 +33,7 @@ namespace VRMaker
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(Kingmaker.Visual.Lighting.ClusteredRenderer), "OnPreRender")]
+        [HarmonyPatch(typeof(Kingmaker.Visual.Lighting.ClusteredRenderer), nameof(Kingmaker.Visual.Lighting.ClusteredRenderer.OnPreRender))]
         private static void FixCulling(Kingmaker.Visual.Lighting.ClusteredRenderer __instance)
         {
             //return __instance.m_CullingGroup != null;
@@ -44,7 +44,34 @@ namespace VRMaker
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch(typeof(Kingmaker.UI.KeyboardAccess), "Tick")]
+        [HarmonyPatch(typeof(Kingmaker.Game), nameof(Kingmaker.Game.OnAreaLoaded))]
+        private static void DisableParticles()
+        {
+            var FoundParticles = UnityEngine.Object.FindObjectsOfType<ParticleSystem>();
+            foreach (ParticleSystem Particle in FoundParticles)
+            {
+                Particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            }
+            Kingmaker.Visual.Particles.FxHelper.DestroyAll();
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(ParticleSystem), nameof(ParticleSystem.Play), new Type[] { })]
+        private static void DisableParticles2(ParticleSystem __instance)
+        {
+            __instance.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(ParticleSystem), nameof(ParticleSystem.Play), new Type[] { typeof(bool) })]
+        private static void DisableParticles3(ParticleSystem __instance)
+        {
+            __instance.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
+
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Kingmaker.UI.KeyboardAccess), nameof(Kingmaker.UI.KeyboardAccess.Tick))]
         private static void CheckForPerspectiveToggle()
         {
             if (Input.GetKeyDown(KeyCode.F1))
