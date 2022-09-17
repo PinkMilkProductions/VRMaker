@@ -44,6 +44,7 @@ namespace VRMaker
 
         public static VRCameraMode CurrentCameraMode;
         public static float NearClipPlaneDistance = 0.01f;
+        public static bool DisableParticles = false;
     }
     
 }

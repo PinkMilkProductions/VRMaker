@@ -32,6 +32,8 @@ namespace VRMaker
             __instance.enabled = false;
         }
 
+        // PERFORMANCE PATCHES - BEGIN
+
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Kingmaker.Visual.Lighting.ClusteredRenderer), nameof(Kingmaker.Visual.Lighting.ClusteredRenderer.OnPreRender))]
         private static void FixCulling(Kingmaker.Visual.Lighting.ClusteredRenderer __instance)
@@ -43,32 +45,51 @@ namespace VRMaker
             }
         }
 
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Camera), "fieldOfView", MethodType.Setter)]
+        private static bool suppressWarnings(Camera __instance)
+        {
+            if (__instance.stereoEnabled)
+            {
+                return false;
+            }
+            return true;
+        }
+
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Kingmaker.Game), nameof(Kingmaker.Game.OnAreaLoaded))]
         private static void DisableParticles()
         {
-            var FoundParticles = UnityEngine.Object.FindObjectsOfType<ParticleSystem>();
-            foreach (ParticleSystem Particle in FoundParticles)
+            if (CameraManager.DisableParticles)
             {
-                Particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                var FoundParticles = UnityEngine.Object.FindObjectsOfType<ParticleSystem>();
+                foreach (ParticleSystem Particle in FoundParticles)
+                {
+                    Particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                }
+                Kingmaker.Visual.Particles.FxHelper.DestroyAll();
             }
-            Kingmaker.Visual.Particles.FxHelper.DestroyAll();
+            
         }
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(ParticleSystem), nameof(ParticleSystem.Play), new Type[] { })]
         private static void DisableParticles2(ParticleSystem __instance)
         {
-            __instance.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            if (CameraManager.DisableParticles)
+                __instance.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(ParticleSystem), nameof(ParticleSystem.Play), new Type[] { typeof(bool) })]
         private static void DisableParticles3(ParticleSystem __instance)
         {
-            __instance.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            if (CameraManager.DisableParticles)
+                __instance.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
 
+        // PERFORMANCE PATCHES - END
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Kingmaker.UI.KeyboardAccess), nameof(Kingmaker.UI.KeyboardAccess.Tick))]
