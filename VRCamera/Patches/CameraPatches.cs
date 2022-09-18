@@ -59,8 +59,9 @@ namespace VRMaker
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Kingmaker.Game), nameof(Kingmaker.Game.OnAreaLoaded))]
-        private static void DisableParticles()
+        private static void AreaLoadThings()
         {
+            // Conditional, for performance testing
             if (CameraManager.DisableParticles)
             {
                 var FoundParticles = UnityEngine.Object.FindObjectsOfType<ParticleSystem>();
@@ -91,7 +92,15 @@ namespace VRMaker
 
         // PERFORMANCE PATCHES - END
 
-        [HarmonyPostfix]
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Game), "ControllerMode", MethodType.Getter)]
+        private static bool ForceGamePad(Game __instance)
+        {
+            __instance.m_ControllerMode = Game.ControllerModeType.Gamepad;
+            return true;
+        }
+
+        [HarmonyPrefix]
         [HarmonyPatch(typeof(Kingmaker.UI.KeyboardAccess), nameof(Kingmaker.UI.KeyboardAccess.Tick))]
         private static void CheckForPerspectiveToggle()
         {
@@ -103,12 +112,20 @@ namespace VRMaker
                 {
                     F1Pressed = true;
 
+                    Logs.WriteInfo("Got past debouncing");
+                    // ADD A SKYBOX
+                    CameraManager.AddSkyBox();
+
+                    Logs.WriteInfo("AddedSkyBox");
+
                     Camera MyCamera = Game.GetCamera();
                     // If we are not in firstperson
                     if (CameraManager.CurrentCameraMode != CameraManager.VRCameraMode.FirstPerson)
                     {
+                        Logs.WriteInfo("Got past cameramod check");
                         if (Game.Instance.Player.MainCharacter != null)
                         {
+                            Logs.WriteInfo("Got past maincharacter exist check");
                             // switch to first person
                             VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
                             OriginalCameraParent = MyCamera.transform.parent;

@@ -34,6 +34,13 @@ namespace VRMaker
             PPbehaviour.enabled = false;
         }
 
+        public static void AddSkyBox()
+        {
+            // ADD THE LOADED SKYBOX !!!!
+            var SceneSkybox = GameObject.Instantiate(AssetLoader.Skybox, Vector3.zeroVector, Quaternion.identityQuaternion);
+            SceneSkybox.transform.localScale = new Vector3(999999, 999999, 999999);
+        }
+
         public enum VRCameraMode
         {
             DemeoLike,

@@ -1,10 +1,15 @@
 ﻿using System.Reflection;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using BepInEx;
 using HarmonyLib;
 using UnityEngine;
 using UnityEditor;
 using Kingmaker;
 using Valve.VR;
+
 
 namespace VRMaker
 {
@@ -15,14 +20,21 @@ namespace VRMaker
         public const string PLUGIN_NAME = "VRMaker";
         public const string PLUGIN_VERSION = "0.0.3";
 
+        public static string gameExePath = Process.GetCurrentProcess().MainModule.FileName;
+        public static string gamePath = Path.GetDirectoryName(gameExePath);
+
         private void Awake()
         {
             // Plugin startup logic
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
 
+            new AssetLoader();
+
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
 
             InitSteamVR();
+
+            Game.s_Instance.ControllerMode = Game.ControllerModeType.Gamepad;
         }
 
         private static void InitSteamVR()
