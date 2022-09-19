@@ -17,6 +17,7 @@ namespace VRMaker
             if (Camera.main != null)
             {
                 Camera.main.nearClipPlane = NearClipPlaneDistance;
+                Camera.main.farClipPlane = FarClipPlaneDistance;
             }
 
         }
@@ -25,6 +26,7 @@ namespace VRMaker
         {
             Camera CurrentCamera = Game.GetCamera();
             CurrentCamera.nearClipPlane = NearClipPlaneDistance;
+            CurrentCamera.farClipPlane = FarClipPlaneDistance;
         }
 
         public static void TurnOffPostProcessing()
@@ -39,6 +41,7 @@ namespace VRMaker
             // ADD THE LOADED SKYBOX !!!!
             var SceneSkybox = GameObject.Instantiate(AssetLoader.Skybox, Vector3.zeroVector, Quaternion.identityQuaternion);
             SceneSkybox.transform.localScale = new Vector3(999999, 999999, 999999);
+            SceneSkybox.transform.eulerAngles = new Vector3(270, 0, 0);
         }
 
         public enum VRCameraMode
@@ -51,6 +54,7 @@ namespace VRMaker
 
         public static VRCameraMode CurrentCameraMode;
         public static float NearClipPlaneDistance = 0.01f;
+        public static float FarClipPlaneDistance = 59999f;
         public static bool DisableParticles = false;
     }
     
