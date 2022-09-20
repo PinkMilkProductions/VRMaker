@@ -65,6 +65,10 @@ namespace VRMaker
                     VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
                     OriginalCameraParent = MyCamera.transform.parent;
                     MyCamera.transform.parent = VROrigin.transform;
+                    if (RightHand)
+                        RightHand.transform.parent = VROrigin.transform;
+                    if (LeftHand)
+                        LeftHand.transform.parent = VROrigin.transform;
                     CameraManager.CurrentCameraMode = CameraManager.VRCameraMode.FirstPerson;
                 }
 
