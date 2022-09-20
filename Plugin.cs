@@ -46,12 +46,32 @@ namespace VRMaker
 
             // INPUT TEST
             SteamVR_Actions._default.RightGrab.AddOnStateDownListener(GrabRightDown, SteamVR_Input_Sources.Any);
+            SteamVR_Actions._default.RightHandPose.AddOnUpdateListener(SteamVR_Input_Sources.Any, UpdateRightHand);
+            SteamVR_Actions._default.LeftHandPose.AddOnUpdateListener(SteamVR_Input_Sources.Any, UpdateLeftHand);
         }
 
         // INPUT TEST
-        public static  void GrabRightDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
+        public static void GrabRightDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
         {
             CameraManager.SwitchPOV();
+            CameraManager.SpawnHands();
+        }
+
+        public static void UpdateRightHand(SteamVR_Action_Pose fromAction, SteamVR_Input_Sources fromSource)
+        {
+            if (CameraManager.RightHand)
+            {
+                CameraManager.RightHand.transform.localPosition = SteamVR_Actions._default.RightHandPose.localPosition;
+            }
+            
+        }
+
+        public static void UpdateLeftHand(SteamVR_Action_Pose fromAction, SteamVR_Input_Sources fromSource)
+        {
+            if (CameraManager.LeftHand)
+            {
+                CameraManager.LeftHand.transform.localPosition = SteamVR_Actions._default.LeftHandPose.localPosition;
+            }
         }
 
     }

@@ -72,8 +72,29 @@ namespace VRMaker
             else
             {
                 MyCamera.transform.parent = OriginalCameraParent;
+                if (RightHand)
+                    RightHand.transform.parent = OriginalCameraParent;
+                if (LeftHand)
+                    LeftHand.transform.parent = OriginalCameraParent;
+
                 CameraManager.CurrentCameraMode = CameraManager.VRCameraMode.DemeoLike;
             }
+        }
+
+        public static void SpawnHands()
+        {
+            if (!RightHand)
+            {
+                RightHand = GameObject.Instantiate(AssetLoader.RightHandBase, Vector3.zeroVector, Quaternion.identityQuaternion);
+                RightHand.transform.parent = VROrigin.transform;
+            }
+            if (!LeftHand)
+            {
+                LeftHand = GameObject.Instantiate(AssetLoader.LeftHandBase, Vector3.zeroVector, Quaternion.identityQuaternion);
+                RightHand.transform.parent = VROrigin.transform;
+            }
+
+
         }
 
         public enum VRCameraMode
@@ -91,6 +112,8 @@ namespace VRMaker
 
         public static Transform OriginalCameraParent = null;
         public static GameObject VROrigin = new GameObject();
+        public static GameObject LeftHand = null;
+        public static GameObject RightHand = null;
     }
     
 }
