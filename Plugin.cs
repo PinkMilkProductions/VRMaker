@@ -23,6 +23,7 @@ namespace VRMaker
         public static string gameExePath = Process.GetCurrentProcess().MainModule.FileName;
         public static string gamePath = Path.GetDirectoryName(gameExePath);
 
+
         private void Awake()
         {
             // Plugin startup logic
@@ -39,8 +40,18 @@ namespace VRMaker
 
         private static void InitSteamVR()
         {
+            SteamVR_Actions.PreInitialize();
             SteamVR.Initialize();
             SteamVR_Settings.instance.pauseGameWhenDashboardVisible = true;
+
+            // INPUT TEST
+            SteamVR_Actions._default.RightGrab.AddOnStateDownListener(GrabRightDown, SteamVR_Input_Sources.Any);
+        }
+
+        // INPUT TEST
+        public static  void GrabRightDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
+        {
+            Logs.WriteInfo("GrabRight is up");
         }
 
     }

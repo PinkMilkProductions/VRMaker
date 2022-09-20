@@ -30,5 +30,8 @@
     <Reference Include="SteamVR">
       <HintPath>Libs\SteamVR.dll</HintPath>
     </Reference>
+    <Reference Include="SteamVR_Actions">
+      <HintPath>Libs\SteamVR_Actions.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

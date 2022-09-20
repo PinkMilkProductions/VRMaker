@@ -10,16 +10,20 @@ namespace VRMaker
     class AssetLoader
     {
         public static GameObject Skybox;
+        public static GameObject LeftHand;
+        public static GameObject RightHand;
+
         public AssetLoader()
         {
             var SkyboxBundle = LoadBundle("skyboxassetbundle");
-            Skybox = LoadAsset<GameObject>(SkyboxBundle, "SkyboxGO.prefab");
+            Skybox = LoadAsset<GameObject>(SkyboxBundle, "CustomAssets/SkyboxGO.prefab");
+            LeftHand = LoadAsset<GameObject>(SkyboxBundle, "SteamVR/Prefabs/vr_glove_left_model_slim.prefab");
+            RightHand = LoadAsset<GameObject>(SkyboxBundle, "SteamVR/Prefabs/vr_glove_right_model_slim.prefab");
         }
 
         private T LoadAsset<T>(AssetBundle bundle, string prefabName) where T : UnityEngine.Object
         {
-            //return bundle.LoadAsset<T>($"assets/{prefabName}");
-            var asset = bundle.LoadAsset<T>($"Assets/CustomAssets/{prefabName}");
+            var asset = bundle.LoadAsset<T>($"Assets/{prefabName}");
             if (asset)
                 return asset;
             else
