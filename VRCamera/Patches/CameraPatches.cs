@@ -100,65 +100,16 @@ namespace VRMaker
             return true;
         }
 
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(Kingmaker.UI.KeyboardAccess), nameof(Kingmaker.UI.KeyboardAccess.Tick))]
-        private static void CheckForPerspectiveToggle()
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Kingmaker.Game), nameof(Kingmaker.Game.Tick))]
+        private static void FollowPlayer()
         {
-            if (Input.GetKeyDown(KeyCode.F1))
-            {
-                Logs.WriteInfo("F1 pressed");
-
-                if (!F1Pressed)
-                {
-                    F1Pressed = true;
-
-                    Logs.WriteInfo("Got past debouncing");
-                    // ADD A SKYBOX
-                    CameraManager.AddSkyBox();
-
-                    Logs.WriteInfo("AddedSkyBox");
-
-                    Camera MyCamera = Game.GetCamera();
-                    // If we are not in firstperson
-                    if (CameraManager.CurrentCameraMode != CameraManager.VRCameraMode.FirstPerson)
-                    {
-                        Logs.WriteInfo("Got past cameramod check");
-                        if (Game.Instance.Player.MainCharacter != null)
-                        {
-                            Logs.WriteInfo("Got past maincharacter exist check");
-                            // switch to first person
-                            VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
-                            OriginalCameraParent = MyCamera.transform.parent;
-                            MyCamera.transform.parent = VROrigin.transform;
-                            CameraManager.CurrentCameraMode = CameraManager.VRCameraMode.FirstPerson;
-                        }
-                        
-                    }
-                    else
-                    {
-                        MyCamera.transform.parent = OriginalCameraParent;
-                        CameraManager.CurrentCameraMode = CameraManager.VRCameraMode.DemeoLike;
-                    }
-                }
-            }
-            else
-            {
-                F1Pressed = false;
-            }
-
             if (CameraManager.CurrentCameraMode == CameraManager.VRCameraMode.FirstPerson)
             {
-                if (Game.Instance.Player.MainCharacter != null)
-                {
-                    VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
-                }
-                    
+                CameraManager.VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
             }
         }
 
-        static bool F1Pressed = false;
-        static Transform OriginalCameraParent = null;
-        static GameObject VROrigin = new GameObject();
     }
 
 }

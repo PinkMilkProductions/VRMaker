@@ -51,7 +51,7 @@ namespace VRMaker
         // INPUT TEST
         public static  void GrabRightDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
         {
-            Logs.WriteInfo("GrabRight is up");
+            CameraManager.SwitchPOV();
         }
 
     }
