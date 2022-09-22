@@ -108,6 +108,10 @@ namespace VRMaker
             {
                 CameraManager.VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
             }
+            else
+            {
+                CameraManager.HandleDemeoCamera();
+            }
         }
 
     }

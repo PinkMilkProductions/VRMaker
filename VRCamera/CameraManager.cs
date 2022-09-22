@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using Kingmaker;
+using Valve.VR;
 
 namespace VRMaker
 {
@@ -62,8 +63,12 @@ namespace VRMaker
                 {
                     Logs.WriteInfo("Got past maincharacter exist check");
                     // switch to first person
+                    VROrigin.transform.parent = null;
                     VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
-                    OriginalCameraParent = MyCamera.transform.parent;
+
+                    if (!OriginalCameraParent)
+                        OriginalCameraParent = MyCamera.transform.parent;
+
                     MyCamera.transform.parent = VROrigin.transform;
                     if (RightHand)
                         RightHand.transform.parent = VROrigin.transform;
@@ -75,11 +80,11 @@ namespace VRMaker
             }
             else
             {
-                MyCamera.transform.parent = OriginalCameraParent;
-                if (RightHand)
-                    RightHand.transform.parent = OriginalCameraParent;
-                if (LeftHand)
-                    LeftHand.transform.parent = OriginalCameraParent;
+                VROrigin.transform.position = OriginalCameraParent.position;
+                VROrigin.transform.rotation = OriginalCameraParent.rotation;
+                VROrigin.transform.localScale = OriginalCameraParent.localScale;
+
+                VROrigin.transform.parent = OriginalCameraParent;
 
                 CameraManager.CurrentCameraMode = CameraManager.VRCameraMode.DemeoLike;
             }
@@ -95,10 +100,54 @@ namespace VRMaker
             if (!LeftHand)
             {
                 LeftHand = GameObject.Instantiate(AssetLoader.LeftHandBase, Vector3.zeroVector, Quaternion.identityQuaternion);
-                RightHand.transform.parent = VROrigin.transform;
+                LeftHand.transform.parent = VROrigin.transform;
             }
+        }
 
+        public static void HandleDemeoCamera()
+        {
+            if ((CameraManager.CurrentCameraMode == CameraManager.VRCameraMode.DemeoLike)
+                && RightHand && LeftHand)
+            {
+                Kingmaker.View.CameraRig TheCameraRig = Kingmaker.Game.Instance.UI.GetCameraRig();
+                Camera CurrentCamera = TheCameraRig.Camera;
+                if (!VROrigin.GetComponent<Rigidbody>())
+                {
+                    Rigidbody tempvar = VROrigin.AddComponent<Rigidbody>();
+                    tempvar.useGravity = false;
+                }
+                    
+                Rigidbody VROriginPhys = CurrentCamera.GetComponent<Rigidbody>();
+                if (RightHandGrab && LeftHandGrab)
+                {
+                    if (InitialHandDistance == 0f)
+                    {
+                        InitialHandDistance = Vector3.Distance(CameraManager.RightHand.transform.position, CameraManager.LeftHand.transform.position);
+                        ZoomOrigin = VROrigin.transform.position;
+                    }
+                    float HandDistance = Vector3.Distance(CameraManager.RightHand.transform.position, CameraManager.LeftHand.transform.position);
+                    float scale = HandDistance / InitialHandDistance;
 
+                    VROrigin.transform.position = Vector3.LerpUnclamped(Game.Instance.Player.MainCharacter.Value.GetPosition(), ZoomOrigin, scale);
+                }
+                else if (RightHandGrab || LeftHandGrab)
+                {
+                    InitialHandDistance = 0f;
+                    if (RightHandGrab)
+                    {
+                        VROriginPhys.velocity = - SteamVR_Actions._default.RightHandPose.velocity;
+                    }
+                    if (LeftHandGrab)
+                    {
+                        VROriginPhys.velocity = - SteamVR_Actions._default.LeftHandPose.velocity;
+                    }
+                }
+                else
+                {
+                    InitialHandDistance = 0f;
+                    VROriginPhys.velocity = Vector3.zero;
+                }
+            }
         }
 
         public enum VRCameraMode
@@ -118,6 +167,12 @@ namespace VRMaker
         public static GameObject VROrigin = new GameObject();
         public static GameObject LeftHand = null;
         public static GameObject RightHand = null;
+
+        public static bool RightHandGrab = false;
+        public static bool LeftHandGrab = false;
+
+        public static float InitialHandDistance = 0f;
+        public static Vector3 ZoomOrigin = Vector3.zero;
     }
     
 }

@@ -1,0 +1,122 @@
+{
+  "actions": [
+    {
+      "name": "/actions/default/in/SkeletonLeftHand",
+      "type": "skeleton",
+      "skeleton": "/skeleton/hand/left"
+    },
+    {
+      "name": "/actions/default/in/SkeletonRightHand",
+      "type": "skeleton",
+      "skeleton": "/skeleton/hand/right"
+    },
+    {
+      "name": "/actions/default/in/LeftGrab",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/RightGrab",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/LeftTrigger",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/RightTrigger",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/LeftHandPose",
+      "type": "pose"
+    },
+    {
+      "name": "/actions/default/in/RightHandPose",
+      "type": "pose"
+    },
+    {
+      "name": "/actions/default/in/LeftThumbStick",
+      "type": "vector2"
+    },
+    {
+      "name": "/actions/default/in/RightThumbStick",
+      "type": "vector2"
+    },
+    {
+      "name": "/actions/default/out/Haptic",
+      "type": "vibration"
+    }
+  ],
+  "action_sets": [
+    {
+      "name": "/actions/default",
+      "usage": "leftright"
+    }
+  ],
+  "default_bindings": [
+    {
+      "controller_type": "vive_controller",
+      "binding_url": "bindings_vive_controller.json"
+    },
+    {
+      "controller_type": "oculus_touch",
+      "binding_url": "bindings_oculus_touch.json"
+    },
+    {
+      "controller_type": "knuckles",
+      "binding_url": "bindings_knuckles.json"
+    },
+    {
+      "controller_type": "holographic_controller",
+      "binding_url": "bindings_holographic_controller.json"
+    },
+    {
+      "controller_type": "vive_cosmos_controller",
+      "binding_url": "bindings_vive_cosmos_controller.json"
+    },
+    {
+      "controller_type": "vive_cosmos",
+      "binding_url": "binding_vive_cosmos.json"
+    },
+    {
+      "controller_type": "vive",
+      "binding_url": "binding_vive.json"
+    },
+    {
+      "controller_type": "index_hmd",
+      "binding_url": "binding_index_hmd.json"
+    },
+    {
+      "controller_type": "vive_pro",
+      "binding_url": "binding_vive_pro.json"
+    },
+    {
+      "controller_type": "rift",
+      "binding_url": "binding_rift.json"
+    },
+    {
+      "controller_type": "holographic_hmd",
+      "binding_url": "binding_holographic_hmd.json"
+    },
+    {
+      "controller_type": "vive_tracker_camera",
+      "binding_url": "binding_vive_tracker_camera.json"
+    }
+  ],
+  "localization": [
+    {
+      "language_tag": "en_US",
+      "/actions/default/in/SkeletonLeftHand": "Skeleton (Left)",
+      "/actions/default/in/SkeletonRightHand": "Skeleton (Right)",
+      "/actions/default/out/Haptic": "Haptic",
+      "/actions/default/in/LeftGrab": "Left Grab",
+      "/actions/default/in/RightGrab": "Right Grab",
+      "/actions/default/in/LeftTrigger": "Left Trigger",
+      "/actions/default/in/RightTrigger": "Right Trigger",
+      "/actions/default/in/LeftHandPose": "Left Hand Pose",
+      "/actions/default/in/RightHandPose": "Right Hand Pose",
+      "/actions/default/in/LeftThumbStick": "The Left joystick",
+      "/actions/default/in/RightThumbStick": "The Right joystick"
+    }
+  ]
+}
