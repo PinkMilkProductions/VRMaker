@@ -69,13 +69,9 @@ namespace VRMaker
                     if (!OriginalCameraParent)
                     {
                         OriginalCameraParent = OriginalCamera.transform.parent;
-                        //VRCamera = new Camera();
-                        //OriginalCamera.enabled = false;
-                        //VRCamera.enabled = true;
                     }
 
                     OriginalCamera.transform.parent = VROrigin.transform;
-                    //VRCamera.transform.parent = VROrigin.transform;
                     if (RightHand)
                         RightHand.transform.parent = VROrigin.transform;
                     if (LeftHand)
@@ -86,9 +82,9 @@ namespace VRMaker
             }
             else
             {
-                //VROrigin.transform.position = OriginalCameraParent.position;
-                //VROrigin.transform.rotation = OriginalCameraParent.rotation;
-                //VROrigin.transform.localScale = OriginalCameraParent.localScale;
+                VROrigin.transform.position = OriginalCameraParent.position;
+                VROrigin.transform.rotation = OriginalCameraParent.rotation;
+                VROrigin.transform.localScale = OriginalCameraParent.localScale;
 
                 VROrigin.transform.parent = OriginalCameraParent;
 
@@ -139,13 +135,17 @@ namespace VRMaker
                 else if (RightHandGrab || LeftHandGrab)
                 {
                     InitialHandDistance = 0f;
+
+                    SpeedScalingFactor = Mathf.Clamp(Math.Abs(Vector3.Distance(Game.Instance.Player.MainCharacter.Value.GetPosition(), VROrigin.transform.position)), 1.0f, FarClipPlaneDistance);
                     if (RightHandGrab)
                     {
-                        VROriginPhys.velocity = - SteamVR_Actions._default.RightHandPose.velocity;
+                        Vector3 ScaledSpeed = SteamVR_Actions._default.RightHandPose.velocity * SpeedScalingFactor;
+                        VROriginPhys.velocity = new Vector3(ScaledSpeed.x, - ScaledSpeed.y, ScaledSpeed.z);
                     }
                     if (LeftHandGrab)
                     {
-                        VROriginPhys.velocity = - SteamVR_Actions._default.LeftHandPose.velocity;
+                        Vector3 ScaledSpeed = SteamVR_Actions._default.LeftHandPose.velocity * SpeedScalingFactor;
+                        VROriginPhys.velocity = new Vector3(ScaledSpeed.x, - ScaledSpeed.y, ScaledSpeed.z);
                     }
                 }
                 else
@@ -155,6 +155,23 @@ namespace VRMaker
                 }
             }
         }
+
+        public static Vector3 EstimateVelocity(Vector3 Position)
+        {
+            if (PreviousVelocityPosition == Vector3.zero)
+            {
+                PreviousVelocityPosition = Position;
+                return Vector3.zero;
+            }
+            else
+            {
+                Vector3 Value = (Position - PreviousVelocityPosition) / Time.deltaTime;
+                PreviousVelocityPosition = Position;
+                return Value;
+            }
+                
+        }
+
 
         public enum VRCameraMode
         {
@@ -179,8 +196,9 @@ namespace VRMaker
 
         public static float InitialHandDistance = 0f;
         public static Vector3 ZoomOrigin = Vector3.zero;
+        public static float SpeedScalingFactor = 1f;
+        public static Vector3 PreviousVelocityPosition = Vector3.zero;
 
-        public static Camera VRCamera = null;
     }
     
 }
