@@ -43,6 +43,10 @@
       "type": "vector2"
     },
     {
+      "name": "/actions/default/in/SwitchPOV",
+      "type": "boolean"
+    },
+    {
       "name": "/actions/default/out/Haptic",
       "type": "vibration"
     }
@@ -116,7 +120,8 @@
       "/actions/default/in/LeftHandPose": "Left Hand Pose",
       "/actions/default/in/RightHandPose": "Right Hand Pose",
       "/actions/default/in/LeftThumbStick": "The Left joystick",
-      "/actions/default/in/RightThumbStick": "The Right joystick"
+      "/actions/default/in/RightThumbStick": "The Right joystick",
+      "/actions/default/in/SwitchPOV": "Button that switches the POV from Demeomode to First Person."
     }
   ]
 }

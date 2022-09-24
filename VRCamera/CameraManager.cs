@@ -54,7 +54,7 @@ namespace VRMaker
 
             Logs.WriteInfo("AddedSkyBox");
 
-            Camera MyCamera = Game.GetCamera();
+            Camera OriginalCamera = Game.GetCamera();
             // If we are not in firstperson
             if (CameraManager.CurrentCameraMode != CameraManager.VRCameraMode.FirstPerson)
             {
@@ -67,9 +67,15 @@ namespace VRMaker
                     VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
 
                     if (!OriginalCameraParent)
-                        OriginalCameraParent = MyCamera.transform.parent;
+                    {
+                        OriginalCameraParent = OriginalCamera.transform.parent;
+                        //VRCamera = new Camera();
+                        //OriginalCamera.enabled = false;
+                        //VRCamera.enabled = true;
+                    }
 
-                    MyCamera.transform.parent = VROrigin.transform;
+                    OriginalCamera.transform.parent = VROrigin.transform;
+                    //VRCamera.transform.parent = VROrigin.transform;
                     if (RightHand)
                         RightHand.transform.parent = VROrigin.transform;
                     if (LeftHand)
@@ -80,9 +86,9 @@ namespace VRMaker
             }
             else
             {
-                VROrigin.transform.position = OriginalCameraParent.position;
-                VROrigin.transform.rotation = OriginalCameraParent.rotation;
-                VROrigin.transform.localScale = OriginalCameraParent.localScale;
+                //VROrigin.transform.position = OriginalCameraParent.position;
+                //VROrigin.transform.rotation = OriginalCameraParent.rotation;
+                //VROrigin.transform.localScale = OriginalCameraParent.localScale;
 
                 VROrigin.transform.parent = OriginalCameraParent;
 
@@ -117,7 +123,7 @@ namespace VRMaker
                     tempvar.useGravity = false;
                 }
                     
-                Rigidbody VROriginPhys = CurrentCamera.GetComponent<Rigidbody>();
+                Rigidbody VROriginPhys = VROrigin.GetComponent<Rigidbody>();
                 if (RightHandGrab && LeftHandGrab)
                 {
                     if (InitialHandDistance == 0f)
@@ -173,6 +179,8 @@ namespace VRMaker
 
         public static float InitialHandDistance = 0f;
         public static Vector3 ZoomOrigin = Vector3.zero;
+
+        public static Camera VRCamera = null;
     }
     
 }
