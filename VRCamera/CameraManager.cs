@@ -64,7 +64,9 @@ namespace VRMaker
                     Logs.WriteInfo("Got past maincharacter exist check");
                     // switch to first person
                     VROrigin.transform.parent = null;
-                    VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
+                    VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.EyePosition;
+
+                    VROrigin.transform.LookAt(Game.Instance.Player.MainCharacter.Value.OrientationDirection);
 
                     if (!OriginalCameraParent)
                     {
@@ -122,6 +124,7 @@ namespace VRMaker
                 Rigidbody VROriginPhys = VROrigin.GetComponent<Rigidbody>();
                 if (RightHandGrab && LeftHandGrab)
                 {
+                    // SCALING
                     if (InitialHandDistance == 0f)
                     {
                         InitialHandDistance = Vector3.Distance(CameraManager.RightHand.transform.position, CameraManager.LeftHand.transform.position);
@@ -131,11 +134,34 @@ namespace VRMaker
                     float scale = HandDistance / InitialHandDistance;
 
                     VROrigin.transform.position = Vector3.LerpUnclamped(Game.Instance.Player.MainCharacter.Value.GetPosition(), ZoomOrigin, scale);
+
+                    // ROTATING
+                    if (InitialRotation == true)
+                    {
+                        InitialRotationPoint = Vector3.Lerp(CameraManager.LeftHand.transform.position, CameraManager.RightHand.transform.position, 0.5f);
+                        PreviousRotationVector = CameraManager.LeftHand.transform.position - InitialRotationPoint;
+                        PreviousRotationVector.y = 0;
+                        InitialRotation = false;
+                    }
+                    Vector3 RotationPoint = Vector3.Lerp(CameraManager.LeftHand.transform.position, CameraManager.RightHand.transform.position, 0.5f);
+                    Vector3 RotationVector = CameraManager.LeftHand.transform.position - RotationPoint;
+                    RotationVector.y = 0;
+
+                    float Angle = Vector3.Angle(PreviousRotationVector, RotationVector);
+                    //if (Angle > 1f)
+                    //    Angle = 0;
+                    Angle = Angle / 2;
+     
+                    VROrigin.transform.RotateAround(InitialRotationPoint, Vector3.up, Angle);
+
+                    PreviousRotationVector = RotationVector;
                 }
                 else if (RightHandGrab || LeftHandGrab)
                 {
                     InitialHandDistance = 0f;
+                    InitialRotation = true;
 
+                    // MOVING CAMERA
                     SpeedScalingFactor = Mathf.Clamp(Math.Abs(Vector3.Distance(Game.Instance.Player.MainCharacter.Value.GetPosition(), VROrigin.transform.position)), 1.0f, FarClipPlaneDistance);
                     if (RightHandGrab)
                     {
@@ -151,25 +177,10 @@ namespace VRMaker
                 else
                 {
                     InitialHandDistance = 0f;
+                    InitialRotation = true;
                     VROriginPhys.velocity = Vector3.zero;
                 }
             }
-        }
-
-        public static Vector3 EstimateVelocity(Vector3 Position)
-        {
-            if (PreviousVelocityPosition == Vector3.zero)
-            {
-                PreviousVelocityPosition = Position;
-                return Vector3.zero;
-            }
-            else
-            {
-                Vector3 Value = (Position - PreviousVelocityPosition) / Time.deltaTime;
-                PreviousVelocityPosition = Position;
-                return Value;
-            }
-                
         }
 
 
@@ -195,9 +206,11 @@ namespace VRMaker
         public static bool LeftHandGrab = false;
 
         public static float InitialHandDistance = 0f;
+        public static bool InitialRotation = true;
+        public static Vector3 PreviousRotationVector = Vector3.zero;
+        public static Vector3 InitialRotationPoint = Vector3.zero;
         public static Vector3 ZoomOrigin = Vector3.zero;
         public static float SpeedScalingFactor = 1f;
-        public static Vector3 PreviousVelocityPosition = Vector3.zero;
 
     }
     
