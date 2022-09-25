@@ -143,11 +143,10 @@ namespace VRMaker
                         PreviousRotationVector.y = 0;
                         InitialRotation = false;
                     }
-                    Vector3 RotationPoint = Vector3.Lerp(CameraManager.LeftHand.transform.position, CameraManager.RightHand.transform.position, 0.5f);
-                    Vector3 RotationVector = CameraManager.LeftHand.transform.position - RotationPoint;
+                    Vector3 RotationVector = CameraManager.LeftHand.transform.position - CameraManager.RightHand.transform.position;
                     RotationVector.y = 0;
 
-                    float Angle = Vector3.Angle(PreviousRotationVector, RotationVector);
+                    float Angle = Vector3.SignedAngle(PreviousRotationVector, RotationVector, Vector3.up);
                     //if (Angle > 1f)
                     //    Angle = 0;
                     Angle = Angle / 2;
