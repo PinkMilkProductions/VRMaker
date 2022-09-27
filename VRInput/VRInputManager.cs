@@ -71,6 +71,7 @@ namespace VRMaker
             if (CameraManager.RightHand)
             {
                 CameraManager.RightHand.transform.localPosition = fromAction.localPosition;
+                CameraManager.RightHand.transform.localRotation = fromAction.localRotation;
             }
 
         }
@@ -80,6 +81,7 @@ namespace VRMaker
             if (CameraManager.LeftHand)
             {
                 CameraManager.LeftHand.transform.localPosition = fromAction.localPosition;
+                CameraManager.LeftHand.transform.localRotation = fromAction.localRotation;
             }
         }
     }

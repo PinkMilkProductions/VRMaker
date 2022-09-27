@@ -66,7 +66,7 @@ namespace VRMaker
                     VROrigin.transform.parent = null;
                     VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.EyePosition;
 
-                    VROrigin.transform.LookAt(Game.Instance.Player.MainCharacter.Value.OrientationDirection);
+                    //VROrigin.transform.LookAt(Game.Instance.Player.MainCharacter.Value.OrientationDirection);
 
                     if (!OriginalCameraParent)
                     {
@@ -113,18 +113,19 @@ namespace VRMaker
             if ((CameraManager.CurrentCameraMode == CameraManager.VRCameraMode.DemeoLike)
                 && RightHand && LeftHand)
             {
-                Kingmaker.View.CameraRig TheCameraRig = Kingmaker.Game.Instance.UI.GetCameraRig();
-                Camera CurrentCamera = TheCameraRig.Camera;
+                // Add physics to the VROrigin
                 if (!VROrigin.GetComponent<Rigidbody>())
                 {
                     Rigidbody tempvar = VROrigin.AddComponent<Rigidbody>();
                     tempvar.useGravity = false;
-                }
-                    
+                }    
                 Rigidbody VROriginPhys = VROrigin.GetComponent<Rigidbody>();
+
+                // If we are grabbing with both our hands
                 if (RightHandGrab && LeftHandGrab)
                 {
                     // SCALING
+                    // Setup
                     if (InitialHandDistance == 0f)
                     {
                         InitialHandDistance = Vector3.Distance(CameraManager.RightHand.transform.position, CameraManager.LeftHand.transform.position);
@@ -133,9 +134,11 @@ namespace VRMaker
                     float HandDistance = Vector3.Distance(CameraManager.RightHand.transform.position, CameraManager.LeftHand.transform.position);
                     float scale = HandDistance / InitialHandDistance;
 
+                    // Do the actual distance scaling
                     VROrigin.transform.position = Vector3.LerpUnclamped(Game.Instance.Player.MainCharacter.Value.GetPosition(), ZoomOrigin, scale);
 
                     // ROTATING
+                    // Setup
                     if (InitialRotation == true)
                     {
                         InitialRotationPoint = Vector3.Lerp(CameraManager.LeftHand.transform.position, CameraManager.RightHand.transform.position, 0.5f);
@@ -145,18 +148,17 @@ namespace VRMaker
                     }
                     Vector3 RotationVector = CameraManager.LeftHand.transform.position - CameraManager.RightHand.transform.position;
                     RotationVector.y = 0;
-
                     float Angle = Vector3.SignedAngle(PreviousRotationVector, RotationVector, Vector3.up);
-                    //if (Angle > 1f)
-                    //    Angle = 0;
                     Angle = Angle / 2;
-     
+                    
+                    // Do the actual rotating
                     VROrigin.transform.RotateAround(InitialRotationPoint, Vector3.up, Angle);
 
                     PreviousRotationVector = RotationVector;
                 }
                 else if (RightHandGrab || LeftHandGrab)
                 {
+                    // Reset scaling/rotating flags
                     InitialHandDistance = 0f;
                     InitialRotation = true;
 
@@ -165,16 +167,19 @@ namespace VRMaker
                     if (RightHandGrab)
                     {
                         Vector3 ScaledSpeed = SteamVR_Actions._default.RightHandPose.velocity * SpeedScalingFactor;
-                        VROriginPhys.velocity = new Vector3(ScaledSpeed.x, - ScaledSpeed.y, ScaledSpeed.z);
+                        Vector3 AdjustedSpeed = new Vector3(- ScaledSpeed.x, - ScaledSpeed.y,- ScaledSpeed.z);
+                        VROriginPhys.velocity = VROrigin.transform.rotation * AdjustedSpeed;
                     }
                     if (LeftHandGrab)
                     {
                         Vector3 ScaledSpeed = SteamVR_Actions._default.LeftHandPose.velocity * SpeedScalingFactor;
-                        VROriginPhys.velocity = new Vector3(ScaledSpeed.x, - ScaledSpeed.y, ScaledSpeed.z);
+                        Vector3 AdjustedSpeed = new Vector3(- ScaledSpeed.x, - ScaledSpeed.y, - ScaledSpeed.z);
+                        VROriginPhys.velocity = VROrigin.transform.rotation * AdjustedSpeed;
                     }
                 }
                 else
                 {
+                    // Reset flags + stop extra camera movement
                     InitialHandDistance = 0f;
                     InitialRotation = true;
                     VROriginPhys.velocity = Vector3.zero;

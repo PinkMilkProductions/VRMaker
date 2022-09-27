@@ -19,9 +19,12 @@ namespace VRMaker
         private static void FixNearClipping()
         {
             CameraManager.ReduceNearClipping();
-            //Also test this postprocess disable thing
-            //CameraManager.TurnOffPostProcessing();
-            // Start performance profiler
+            if (Plugin.HMDModel == "Vive MV")
+            {
+                Camera CurrentCamera = Game.GetCamera();
+                CurrentCamera.GetComponent<Kingmaker.Visual.FogOfWar.FogOfWarScreenSpaceRenderer>().enabled = false;
+            }
+            
         }
 
         [HarmonyPostfix]

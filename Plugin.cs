@@ -22,6 +22,7 @@ namespace VRMaker
 
         public static string gameExePath = Process.GetCurrentProcess().MainModule.FileName;
         public static string gamePath = Path.GetDirectoryName(gameExePath);
+        public static string HMDModel = "";
 
 
         private void Awake()
@@ -45,6 +46,11 @@ namespace VRMaker
             SteamVR_Settings.instance.pauseGameWhenDashboardVisible = true;
 
             VRInputManager MyVRInputManager = new VRInputManager();
+
+            //Get the type of HMD (for Pimax bugfixing)
+            // PIMAX 5K Plus = Vive MV
+            HMDModel = UnityEngine.XR.XRDevice.model;
+            Logs.WriteInfo(HMDModel);
         }
 
     }
