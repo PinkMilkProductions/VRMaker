@@ -187,6 +187,25 @@ namespace VRMaker
             }
         }
 
+        public static void HandleFirstPersonCamera()
+        {
+            if (CameraManager.CurrentCameraMode == CameraManager.VRCameraMode.FirstPerson)
+            {
+                // POSITION
+                // Attach our origin to the Main Character's eyes (this function gets called every tick)
+                //CameraManager.VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
+                VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.EyePosition;
+
+                //ROTATION
+                Vector3 RotationEulers = new Vector3(0, RightJoystick.x, 0);
+                VROrigin.transform.Rotate(RotationEulers);
+
+                // Movement is done via a patch
+            }
+            
+
+        }
+
 
         public enum VRCameraMode
         {
@@ -215,6 +234,9 @@ namespace VRMaker
         public static Vector3 InitialRotationPoint = Vector3.zero;
         public static Vector3 ZoomOrigin = Vector3.zero;
         public static float SpeedScalingFactor = 1f;
+
+        public static Vector2 LeftJoystick = Vector2.zero;
+        public static Vector2 RightJoystick = Vector2.zero;
 
     }
     

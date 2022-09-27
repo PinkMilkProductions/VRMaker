@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 using Valve.VR;
 
 namespace VRMaker
@@ -16,6 +17,7 @@ namespace VRMaker
 
         public static void SetUpListeners()
         {
+            // BOOLEANS
             SteamVR_Actions._default.LeftTrigger.AddOnStateDownListener(TriggerLeftDown, SteamVR_Input_Sources.Any);
             SteamVR_Actions._default.RightGrab.AddOnStateDownListener(GrabRightDown, SteamVR_Input_Sources.Any);
             SteamVR_Actions._default.RightGrab.AddOnStateUpListener(GrabRightUp, SteamVR_Input_Sources.Any);
@@ -24,13 +26,17 @@ namespace VRMaker
             SteamVR_Actions._default.SwitchPOV.AddOnStateDownListener(OnSwitchPOVDown, SteamVR_Input_Sources.Any);
             SteamVR_Actions._default.SwitchPOV.AddOnStateUpListener(OnSwitchPOVUp, SteamVR_Input_Sources.Any);
 
+            // VECTOR 2Ds
+            SteamVR_Actions._default.LeftThumbStick.AddOnUpdateListener(OnLeftJoystickUpdate, SteamVR_Input_Sources.Any);
+            SteamVR_Actions._default.RightThumbStick.AddOnUpdateListener(OnRightJoystickUpdate, SteamVR_Input_Sources.Any);
+
+            // POSES
             SteamVR_Actions._default.RightHandPose.AddOnUpdateListener(SteamVR_Input_Sources.Any, UpdateRightHand);
             SteamVR_Actions._default.LeftHandPose.AddOnUpdateListener(SteamVR_Input_Sources.Any, UpdateLeftHand);
         }
 
 
-
-
+        // BOOLEANS
         public static void OnSwitchPOVDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
         {
             CameraManager.SwitchPOV();
@@ -66,6 +72,19 @@ namespace VRMaker
             CameraManager.LeftHandGrab = false;
         }
 
+        // VECTOR 2Ds
+        public static void OnLeftJoystickUpdate(SteamVR_Action_Vector2 fromAction, SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
+        {
+            CameraManager.LeftJoystick = axis;
+        }
+
+        public static void OnRightJoystickUpdate(SteamVR_Action_Vector2 fromAction, SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
+        {
+            CameraManager.RightJoystick = axis;
+        }
+
+
+        // POSES
         public static void UpdateRightHand(SteamVR_Action_Pose fromAction, SteamVR_Input_Sources fromSource)
         {
             if (CameraManager.RightHand)

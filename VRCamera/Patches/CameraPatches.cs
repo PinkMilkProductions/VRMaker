@@ -103,13 +103,22 @@ namespace VRMaker
             return true;
         }
 
+        //Movement
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Kingmaker.UI._ConsoleUI.InputLayers.InGameLayer.InGameInputLayer), nameof(Kingmaker.UI._ConsoleUI.InputLayers.InGameLayer.InGameInputLayer.UpdateMovement))]
+        private static void PassJoyStickMoveInput(Kingmaker.UI._ConsoleUI.InputLayers.InGameLayer.InGameInputLayer __instance)
+        {
+            if (CameraManager.LeftJoystick != Vector2.zero)
+                __instance.m_MoveVector = CameraManager.LeftJoystick;
+        }
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Kingmaker.Game), nameof(Kingmaker.Game.Tick))]
-        private static void FollowPlayer()
+        private static void HandleCamera()
         {
             if (CameraManager.CurrentCameraMode == CameraManager.VRCameraMode.FirstPerson)
             {
-                CameraManager.VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
+                CameraManager.HandleFirstPersonCamera();
             }
             else
             {
