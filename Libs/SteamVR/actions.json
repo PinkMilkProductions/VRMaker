@@ -11,22 +11,6 @@
       "skeleton": "/skeleton/hand/right"
     },
     {
-      "name": "/actions/default/in/LeftGrab",
-      "type": "boolean"
-    },
-    {
-      "name": "/actions/default/in/RightGrab",
-      "type": "boolean"
-    },
-    {
-      "name": "/actions/default/in/LeftTrigger",
-      "type": "boolean"
-    },
-    {
-      "name": "/actions/default/in/RightTrigger",
-      "type": "boolean"
-    },
-    {
       "name": "/actions/default/in/LeftHandPose",
       "type": "pose"
     },
@@ -35,15 +19,59 @@
       "type": "pose"
     },
     {
-      "name": "/actions/default/in/LeftThumbStick",
+      "name": "/actions/default/in/ui_confirm",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/ui_back",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/ui_navigate",
       "type": "vector2"
     },
     {
-      "name": "/actions/default/in/RightThumbStick",
+      "name": "/actions/default/in/game_action_confirm",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/game_actionbar",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/game_pause",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/game_halt",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/game_move",
       "type": "vector2"
     },
     {
-      "name": "/actions/default/in/SwitchPOV",
+      "name": "/actions/default/in/game_turncamera",
+      "type": "vector2"
+    },
+    {
+      "name": "/actions/default/in/game_group",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/game_menus",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/game_switchpov",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/game_grableft",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/game_grabright",
       "type": "boolean"
     },
     {
@@ -113,15 +141,22 @@
       "/actions/default/in/SkeletonLeftHand": "Skeleton (Left)",
       "/actions/default/in/SkeletonRightHand": "Skeleton (Right)",
       "/actions/default/out/Haptic": "Haptic",
-      "/actions/default/in/LeftGrab": "Left Grab",
-      "/actions/default/in/RightGrab": "Right Grab",
-      "/actions/default/in/LeftTrigger": "Left Trigger",
-      "/actions/default/in/RightTrigger": "Right Trigger",
       "/actions/default/in/LeftHandPose": "Left Hand Pose",
       "/actions/default/in/RightHandPose": "Right Hand Pose",
-      "/actions/default/in/LeftThumbStick": "The Left joystick",
-      "/actions/default/in/RightThumbStick": "The Right joystick",
-      "/actions/default/in/SwitchPOV": "Button that switches the POV from Demeomode to First Person."
+      "/actions/default/in/ui_confirm": "UI Confirm",
+      "/actions/default/in/ui_back": "UI Back",
+      "/actions/default/in/ui_navigate": "UI Navigate",
+      "/actions/default/in/game_action_confirm": "Game Action or Confirm",
+      "/actions/default/in/game_actionbar": "Game ActionBar",
+      "/actions/default/in/game_pause": "Game Pause",
+      "/actions/default/in/game_halt": "Game Halt Actions",
+      "/actions/default/in/game_move": "Game Move",
+      "/actions/default/in/game_turncamera": "Game POV Turn Camera",
+      "/actions/default/in/game_group": "Game Group",
+      "/actions/default/in/game_menus": "Game Menus",
+      "/actions/default/in/game_switchpov": "Game Switch POV",
+      "/actions/default/in/game_grableft": "Game Grab (Left)",
+      "/actions/default/in/game_grabright": "Game Grab (Right)"
     }
   ]
 }

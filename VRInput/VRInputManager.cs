@@ -18,17 +18,16 @@ namespace VRMaker
         public static void SetUpListeners()
         {
             // BOOLEANS
-            SteamVR_Actions._default.LeftTrigger.AddOnStateDownListener(TriggerLeftDown, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.RightGrab.AddOnStateDownListener(GrabRightDown, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.RightGrab.AddOnStateUpListener(GrabRightUp, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.LeftGrab.AddOnStateDownListener(GrabLeftDown, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.LeftGrab.AddOnStateUpListener(GrabLeftUp, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.SwitchPOV.AddOnStateDownListener(OnSwitchPOVDown, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.SwitchPOV.AddOnStateUpListener(OnSwitchPOVUp, SteamVR_Input_Sources.Any);
+            SteamVR_Actions._default.game_group.AddOnStateDownListener(TriggerLeftDown, SteamVR_Input_Sources.Any);
+            SteamVR_Actions._default.game_grabright.AddOnStateDownListener(GrabRightDown, SteamVR_Input_Sources.Any);
+            SteamVR_Actions._default.game_grabright.AddOnStateUpListener(GrabRightUp, SteamVR_Input_Sources.Any);
+            SteamVR_Actions._default.game_grableft.AddOnStateDownListener(GrabLeftDown, SteamVR_Input_Sources.Any);
+            SteamVR_Actions._default.game_grableft.AddOnStateUpListener(GrabLeftUp, SteamVR_Input_Sources.Any);
+            SteamVR_Actions._default.game_switchpov.AddOnStateDownListener(OnSwitchPOVDown, SteamVR_Input_Sources.Any);
 
             // VECTOR 2Ds
-            SteamVR_Actions._default.LeftThumbStick.AddOnUpdateListener(OnLeftJoystickUpdate, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.RightThumbStick.AddOnUpdateListener(OnRightJoystickUpdate, SteamVR_Input_Sources.Any);
+            SteamVR_Actions._default.game_move.AddOnUpdateListener(OnLeftJoystickUpdate, SteamVR_Input_Sources.Any);
+            SteamVR_Actions._default.game_turncamera.AddOnUpdateListener(OnRightJoystickUpdate, SteamVR_Input_Sources.Any);
 
             // POSES
             SteamVR_Actions._default.RightHandPose.AddOnUpdateListener(SteamVR_Input_Sources.Any, UpdateRightHand);
@@ -41,10 +40,6 @@ namespace VRMaker
         {
             CameraManager.SwitchPOV();
             CameraManager.SpawnHands();
-        }
-        public static void OnSwitchPOVUp(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
-        {
-            Logs.WriteInfo("SwitchPOVButton is UP");
         }
 
         public static void TriggerLeftDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
@@ -77,7 +72,7 @@ namespace VRMaker
         public static void OnLeftJoystickUpdate(SteamVR_Action_Vector2 fromAction, SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
         {
             // Doesn't seem to stop joystick drift in it's current state?
-            if (axis.magnitude > 0.05f)
+            if (axis.magnitude > 0.1f)
                 CameraManager.LeftJoystick = axis;
             else
                 CameraManager.LeftJoystick = Vector2.zero;
@@ -86,7 +81,7 @@ namespace VRMaker
         public static void OnRightJoystickUpdate(SteamVR_Action_Vector2 fromAction, SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
         {
             // Doesn't seem to stop joystick drift in it's current state?
-            if (axis.magnitude > 0.05f)
+            if (axis.magnitude > 0.1f)
                 CameraManager.RightJoystick = axis;
             else
                 CameraManager.RightJoystick = Vector2.zero;
