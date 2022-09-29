@@ -17,6 +17,7 @@ namespace VRMaker
 {
     public class Controllers
     {
+        
         private static CustomController vrControllers;
         private static CustomControllerMap vrGameplayMap;
         private static CustomControllerMap vrUIMap;
@@ -227,28 +228,16 @@ namespace VRMaker
 
                 inputs = new BaseInput[]
                 {
-                    new VectorInput(SteamVR_Actions.gameplay_Move, 0, 1),
-                    new SimulatedVectorInput(SteamVR_Actions.gameplay_Look, 2, 3, null, SteamVR_Actions.gameplay_LookRight, null, SteamVR_Actions.gameplay_LookLeft),
-                    new VectorInput(SteamVR_Actions.ui_Navigate, 4, 5),
-                    new ButtonInput(SteamVR_Actions.gameplay_Interact, 6),
-                    new ButtonInput(SteamVR_Actions.gameplay_Jump, 7),
-                    new ButtonInput(SteamVR_Actions.gameplay_PrimarySkill, 8),
-                    new ButtonInput(SteamVR_Actions.gameplay_SecondarySkill, 9),
-                    new ButtonInput(SteamVR_Actions.gameplay_UtilitySkill, 10),
-                    new ButtonInput(SteamVR_Actions.gameplay_SpecialSkill, 11),
-                    new ButtonInput(SteamVR_Actions.gameplay_UseEquipment, 12),
-                    new ButtonInput(SteamVR_Actions.gameplay_Sprint, 13),
-                    new ButtonInput(SteamVR_Actions.gameplay_Ping, 14),
-                    new HoldableButtonInput(SteamVR_Actions.gameplay_ScoreboardAndProfile, 15, SteamVR_Actions.gameplay_HoldScoreboardAndProfile),
-                    new ButtonInput(SteamVR_Actions.ui_Submit, 17),
-                    new ButtonInput(SteamVR_Actions.ui_Cancel, 18),
-                    new ButtonInput(SteamVR_Actions.ui_ReadyAndContinue, 19),
-                    new ButtonInput(SteamVR_Actions.ui_TabLeft, 20),
-                    new ButtonInput(SteamVR_Actions.ui_TabRight, 21),
-                    new ButtonInput(SteamVR_Actions.ui_SubmenuLeft, 22),
-                    new ButtonInput(SteamVR_Actions.ui_SubmenuRight, 23),
-                    new ReleaseButtonInput(SteamVR_Actions.ui_Pause, 24),
-                    new ButtonInput(SteamVR_Actions.ui_RecenterHMD, 25)
+                    new VectorInput(SteamVR_Actions.default_game_move, 0, 1),
+                    new VectorInput(SteamVR_Actions.default_ui_navigate, 2, 3),
+                    new ButtonInput(SteamVR_Actions.default_game_action_confirm, 4),
+                    new ButtonInput(SteamVR_Actions.default_game_actionbar, 5),
+                    new ButtonInput(SteamVR_Actions.default_game_halt, 6),
+                    new ButtonInput(SteamVR_Actions.default_game_pause, 7),
+                    new ButtonInput(SteamVR_Actions.default_game_group, 8),
+                    new ButtonInput(SteamVR_Actions.default_game_menus, 9),
+                    new ButtonInput(SteamVR_Actions.default_ui_confirm, 10),
+                    new ButtonInput(SteamVR_Actions.default_ui_back, 11)
                 };
         }
 
@@ -350,5 +339,6 @@ namespace VRMaker
                 input.UpdateValues(vrControllers);
             }
         }
+        
     }
 }

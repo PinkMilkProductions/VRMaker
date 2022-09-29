@@ -8,6 +8,7 @@ namespace VRMaker
 {
     internal static class RewiredAddons
     {
+        
         internal static CustomController CreateRewiredController()
         {
             HardwareControllerMap_Game hcMap = new HardwareControllerMap_Game(
@@ -16,44 +17,21 @@ namespace VRMaker
                 {
                     new ControllerElementIdentifier(0, "MoveX", "MoveXPos", "MoveXNeg", ControllerElementType.Axis, true),
                     new ControllerElementIdentifier(1, "MoveY", "MoveYPos", "MoveYNeg", ControllerElementType.Axis, true),
-                    new ControllerElementIdentifier(2, "LookX", "LookXPos", "LookXNeg", ControllerElementType.Axis, true),
-                    new ControllerElementIdentifier(3, "LookY", "LookYPos", "LookYNeg", ControllerElementType.Axis, true),
-                    new ControllerElementIdentifier(4, "NavigateX", "NavigateXPos", "NavigateXNeg", ControllerElementType.Axis, true),
-                    new ControllerElementIdentifier(5, "NavigateY", "NavigateYPos", "NavigateYNeg", ControllerElementType.Axis, true),
-                    new ControllerElementIdentifier(6, "Interact", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(7, "Jump", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(8, "PrimarySkill", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(9, "SecondarySkill", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(10, "UtilitySkill", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(11, "SpecialSkill", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(12, "Equipment", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(13, "Sprint", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(14, "Ping", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(15, "Info", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(16, "HoldInfo", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(17, "Submit", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(18, "Cancel", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(19, "Ready", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(20, "TabLeft", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(21, "TabRight", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(22, "SubmenuLeft", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(23, "SubmenuRight", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(24, "Pause", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(25, "RecenterHMD", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(26, "ExtraSkill1", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(27, "ExtraSkill2", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(28, "ExtraSkill3", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(29, "ExtraSkill4", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(30, "PushToTalk", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(31, "BuySkill", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(32, "Load", "", "", ControllerElementType.Button, true),
+                    new ControllerElementIdentifier(2, "LeftStickX", "NavigateXPos", "NavigateXNeg", ControllerElementType.Axis, true),
+                    new ControllerElementIdentifier(3, "LeftStickY", "NavigateYPos", "NavigateYNeg", ControllerElementType.Axis, true),
+                    new ControllerElementIdentifier(4, "action_confirm", "", "", ControllerElementType.Button, true),
+                    new ControllerElementIdentifier(5, "actionbar", "", "", ControllerElementType.Button, true),
+                    new ControllerElementIdentifier(6, "halt", "", "", ControllerElementType.Button, true),
+                    new ControllerElementIdentifier(7, "pause", "", "", ControllerElementType.Button, true),
+                    new ControllerElementIdentifier(8, "group", "", "", ControllerElementType.Button, true),
+                    new ControllerElementIdentifier(9, "menus", "", "", ControllerElementType.Button, true),
+                    new ControllerElementIdentifier(10, "Confirm", "", "", ControllerElementType.Button, true),
+                    new ControllerElementIdentifier(11, "FuncAdditional", "", "", ControllerElementType.Button, true),
                 },
                 new int[] { },
                 new int[] { },
                 new AxisCalibrationData[]
                 {
-                    new AxisCalibrationData(true, 0.1f, 0, -1, 1, false, true),
-                    new AxisCalibrationData(true, 0.1f, 0, -1, 1, false, true),
                     new AxisCalibrationData(true, 0.1f, 0, -1, 1, false, true),
                     new AxisCalibrationData(true, 0.1f, 0, -1, 1, false, true),
                     new AxisCalibrationData(true, 0.1f, 0, -1, 1, false, true),
@@ -64,14 +42,10 @@ namespace VRMaker
                     AxisRange.Full,
                     AxisRange.Full,
                     AxisRange.Full,
-                    AxisRange.Full,
-                    AxisRange.Full,
                     AxisRange.Full
                 },
                 new HardwareAxisInfo[]
                 {
-                    new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, SpecialAxisType.None),
-                    new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, SpecialAxisType.None),
                     new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, SpecialAxisType.None),
                     new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, SpecialAxisType.None),
                     new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, SpecialAxisType.None),
@@ -124,26 +98,19 @@ namespace VRMaker
         {
             List<ActionElementMap> uiElementMaps = new List<ActionElementMap>()
             {
-                new ActionElementMap(11, ControllerElementType.Button, 24, Pole.Positive, AxisRange.Positive, false), //Start
-                new ActionElementMap(12, ControllerElementType.Axis  , 4 , Pole.Positive, AxisRange.Full, false), //UIHor
-                new ActionElementMap(13, ControllerElementType.Axis  , 5 , Pole.Positive, AxisRange.Full, false), //UIVer
-                new ActionElementMap(20, ControllerElementType.Button, 17 , Pole.Positive, AxisRange.Positive, false), //Submit
-                new ActionElementMap(15, ControllerElementType.Button, 18, Pole.Positive, AxisRange.Positive, false), //Cancel
-                new ActionElementMap(25, ControllerElementType.Button, 24, Pole.Positive, AxisRange.Positive, false), //Pause
-                new ActionElementMap(29, ControllerElementType.Button, 20, Pole.Positive, AxisRange.Positive, false), //TabLeft
-                new ActionElementMap(30, ControllerElementType.Button, 21, Pole.Positive, AxisRange.Positive, false), //TabRight
-                new ActionElementMap(31, ControllerElementType.Button, 19, Pole.Positive, AxisRange.Positive, false), //AltSubmit
-                new ActionElementMap(32, ControllerElementType.Button, 22, Pole.Positive, AxisRange.Positive, false), //SubmenuLeft
-                new ActionElementMap(33, ControllerElementType.Button, 23, Pole.Positive, AxisRange.Positive, false), //SubmenuRight
-                new ActionElementMap(150, ControllerElementType.Button, 25, Pole.Positive, AxisRange.Positive, false), //Recenter
-                new ActionElementMap(34, ControllerElementType.Button, 32, Pole.Positive, AxisRange.Positive, false) //Load
+                new ActionElementMap(0, ControllerElementType.Axis  , 2 , Pole.Positive, AxisRange.Full, false), //LeftStickX (UI X axis)
+                new ActionElementMap(1, ControllerElementType.Axis  , 3 , Pole.Positive, AxisRange.Full, false), //LeftStickY (UI Y axis)
+                new ActionElementMap(8, ControllerElementType.Button, 10 , Pole.Positive, AxisRange.Positive, false), //Confirm (UI Confirm)
+                new ActionElementMap(17, ControllerElementType.Button, 11 , Pole.Positive, AxisRange.Positive, false) //FuncAdditional (UI back)
             };
 
             return CreateCustomMap("VRUI", 2, controllerID, uiElementMaps);
         }
 
+        /*
         internal static CustomControllerMap CreateGameplayMap(int controllerID)
         {
+            
             List<ActionElementMap> defaultElementMaps = new List<ActionElementMap>()
             {
                 new ActionElementMap(0 , ControllerElementType.Axis  , 0 , Pole.Positive, AxisRange.Full, false), //MoveHor
@@ -169,8 +136,11 @@ namespace VRMaker
             };
 
             return CreateCustomMap("VRDefault", 0, controllerID, defaultElementMaps);
+            
         }
+        */
 
+        
         private static CustomControllerMap CreateCustomMap(string mapName, int categoryId, int controllerId, List<ActionElementMap> actionElementMaps)
         {
             ReInput.UserData.CreateCustomControllerMap(categoryId, controllerId, 0);
@@ -191,7 +161,9 @@ namespace VRMaker
                 newElementMap.invert = elementMap.invert;
             }
 
-            return ReInput.UserData.aHYIuJhXpYLorVzIjNgjtAekfzf(categoryId, controllerId, 0);
+            return ReInput.UserData.fmpEtOISxUiBDFMiRddLezwxpaK(categoryId, controllerId, 0);
         }
+        
+        
     }
 }
