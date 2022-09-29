@@ -27,6 +27,12 @@
   </ItemGroup>
   
   <ItemGroup>
+    <Reference Include="Rewired_Core">
+      <HintPath>Libs\Rewired_Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Rewired_Windows">
+      <HintPath>Libs\Rewired_Windows.dll</HintPath>
+    </Reference>
     <Reference Include="SteamVR">
       <HintPath>Libs\SteamVR.dll</HintPath>
     </Reference>

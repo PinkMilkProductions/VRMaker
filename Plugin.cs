@@ -51,6 +51,7 @@ namespace VRMaker
             // PIMAX 5K Plus = Vive MV
             HMDModel = UnityEngine.XR.XRDevice.model;
             Logs.WriteInfo(HMDModel);
+            
         }
 
     }

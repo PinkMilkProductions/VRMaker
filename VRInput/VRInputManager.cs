@@ -50,6 +50,7 @@ namespace VRMaker
         public static void TriggerLeftDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
         {
             Logs.WriteInfo("TriggerLeft is Down");
+            LogBinds();
         }
 
         public static void GrabRightDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
@@ -75,12 +76,20 @@ namespace VRMaker
         // VECTOR 2Ds
         public static void OnLeftJoystickUpdate(SteamVR_Action_Vector2 fromAction, SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
         {
-            CameraManager.LeftJoystick = axis;
+            // Doesn't seem to stop joystick drift in it's current state?
+            if (axis.magnitude > 0.05f)
+                CameraManager.LeftJoystick = axis;
+            else
+                CameraManager.LeftJoystick = Vector2.zero;
         }
 
         public static void OnRightJoystickUpdate(SteamVR_Action_Vector2 fromAction, SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
         {
-            CameraManager.RightJoystick = axis;
+            // Doesn't seem to stop joystick drift in it's current state?
+            if (axis.magnitude > 0.05f)
+                CameraManager.RightJoystick = axis;
+            else
+                CameraManager.RightJoystick = Vector2.zero;
         }
 
 
@@ -101,6 +110,36 @@ namespace VRMaker
             {
                 CameraManager.LeftHand.transform.localPosition = fromAction.localPosition;
                 CameraManager.LeftHand.transform.localRotation = fromAction.localRotation;
+            }
+        }
+
+
+        // GAMEPAD STUFF
+
+        public static void LogBinds()
+        {
+            var MyGamePad = Kingmaker.Assets.Console.GamepadInput.GamePad.Instance;
+            List<Kingmaker.Assets.Console.GamepadInput.InputLayer> MyInputLayers = MyGamePad.Layers;
+            foreach(var CurrentInputLayer in MyInputLayers)
+            {
+                Logs.WriteInfo("CurrentInputLayer.ContextName");
+                Logs.WriteInfo(CurrentInputLayer.ContextName);
+
+                List<Kingmaker.Assets.Console.GamepadInput.BindDescription> MyBindDescriptions = CurrentInputLayer.m_Binds;
+                foreach (var CurrentBindDescription in MyBindDescriptions)
+                {
+                    int actionId = CurrentBindDescription.ActionId;
+                    Logs.WriteInfo("ActionId");
+                    Logs.WriteInfo(actionId);
+                    Logs.WriteInfo("ActionId Name");
+                    Logs.WriteInfo(Rewired.ReInput.mapping.Actions[actionId].name);
+                    Logs.WriteInfo("ActionId DescriptiveName");
+                    Logs.WriteInfo(Rewired.ReInput.mapping.Actions[actionId].descriptiveName);
+                    Logs.WriteInfo("EventType");
+                    Logs.WriteInfo(CurrentBindDescription.EventType);
+                    Logs.WriteInfo("Group");
+                    Logs.WriteInfo(CurrentBindDescription.Group);
+                }
             }
         }
     }

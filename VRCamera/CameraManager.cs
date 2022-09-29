@@ -64,7 +64,7 @@ namespace VRMaker
                     Logs.WriteInfo("Got past maincharacter exist check");
                     // switch to first person
                     VROrigin.transform.parent = null;
-                    VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.EyePosition;
+                    VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
 
                     //VROrigin.transform.LookAt(Game.Instance.Player.MainCharacter.Value.OrientationDirection);
 
@@ -192,12 +192,12 @@ namespace VRMaker
             if (CameraManager.CurrentCameraMode == CameraManager.VRCameraMode.FirstPerson)
             {
                 // POSITION
-                // Attach our origin to the Main Character's eyes (this function gets called every tick)
-                //CameraManager.VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
-                VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.EyePosition;
+                // Attach our origin to the Main Character's (this function gets called every tick)
+                CameraManager.VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
+                //VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.EyePosition;
 
                 //ROTATION
-                Vector3 RotationEulers = new Vector3(0, RightJoystick.x, 0);
+                Vector3 RotationEulers = new Vector3(0, Turnrate * RightJoystick.x, 0);
                 VROrigin.transform.Rotate(RotationEulers);
 
                 // Movement is done via a patch
@@ -205,6 +205,7 @@ namespace VRMaker
             
 
         }
+
 
 
         public enum VRCameraMode
@@ -215,19 +216,25 @@ namespace VRMaker
             UI
         }
 
+        //Strictly camera stuff
         public static VRCameraMode CurrentCameraMode;
         public static float NearClipPlaneDistance = 0.01f;
         public static float FarClipPlaneDistance = 59999f;
         public static bool DisableParticles = false;
 
+        // VR Origin and body stuff
         public static Transform OriginalCameraParent = null;
         public static GameObject VROrigin = new GameObject();
         public static GameObject LeftHand = null;
         public static GameObject RightHand = null;
 
+        // VR Input stuff
         public static bool RightHandGrab = false;
         public static bool LeftHandGrab = false;
+        public static Vector2 LeftJoystick = Vector2.zero;
+        public static Vector2 RightJoystick = Vector2.zero;
 
+        // Demeo-like camera stuff
         public static float InitialHandDistance = 0f;
         public static bool InitialRotation = true;
         public static Vector3 PreviousRotationVector = Vector3.zero;
@@ -235,8 +242,8 @@ namespace VRMaker
         public static Vector3 ZoomOrigin = Vector3.zero;
         public static float SpeedScalingFactor = 1f;
 
-        public static Vector2 LeftJoystick = Vector2.zero;
-        public static Vector2 RightJoystick = Vector2.zero;
+        // FIrst person camera stuff
+        public static float Turnrate = 3f;
 
     }
     
