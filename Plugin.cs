@@ -8,6 +8,7 @@ using HarmonyLib;
 using UnityEngine;
 using UnityEditor;
 using Kingmaker;
+using Rewired;
 using Valve.VR;
 
 
@@ -51,7 +52,9 @@ namespace VRMaker
             // PIMAX 5K Plus = Vive MV
             HMDModel = UnityEngine.XR.XRDevice.model;
             Logs.WriteInfo(HMDModel);
-            
+
+            Controllers.Init();
+
         }
 
     }

@@ -23,6 +23,9 @@ namespace VRMaker
         protected virtual void Update()
         {
             UpdateTransform();
+            // The only way i seem to call this stuff
+            Logs.WriteInfo("Update hook called");
+            Controllers.Update();
         }
 
         public void SetTargetTransform(Transform target)

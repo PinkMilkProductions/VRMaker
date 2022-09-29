@@ -15,7 +15,7 @@ using Valve.VR;
 
 namespace VRMaker
 {
-    public class Controllers
+    public static class Controllers
     {
         
         private static CustomController vrControllers;
@@ -38,13 +38,14 @@ namespace VRMaker
         {
             ReInput.InputSourceUpdateEvent += UpdateVRInputs;
 
-            RoR2Application.onUpdate += Update;
+            //RoR2Application.onUpdate += Update;
 
-            On.RoR2.UI.InputBindingControl.Awake += DisableControllerBinds;
+            //On.RoR2.UI.InputBindingControl.Awake += DisableControllerBinds;
 
 
-            IL.RoR2.PlayerCharacterMasterController.Update += ControllerMovementDirection;
+            //IL.RoR2.PlayerCharacterMasterController.Update += ControllerMovementDirection;
 
+            /*
             On.RoR2.UI.MainMenu.ProfileMainMenuScreen.SetMainProfile += (orig, self, profile) =>
             {
                 orig(self, profile);
@@ -54,6 +55,7 @@ namespace VRMaker
                     RoR2Application.onUpdate += Update;
                 }
             };
+            */
 
             SetupControllerInputs();
         }
@@ -61,7 +63,7 @@ namespace VRMaker
         
 
 
-
+        /*
         internal static void ApplyRemaps(string bodyName)
         {
             if (!skillBindingOverrides.Exists(x => x.bodyName == bodyName))
@@ -107,7 +109,9 @@ namespace VRMaker
                 }
             }
         }
+        */
 
+        /*
         internal static void RevertRemap()
         {
             ControllerMap map = Utils.localInputPlayer.controllers.maps.GetMap(vrControllers, vrGameplayMap.id);
@@ -132,7 +136,9 @@ namespace VRMaker
                 }
             }
         }
+        */
 
+        /*
         internal static void ChangeDominanceDependantMaps()
         {
             Player player = Utils.localInputPlayer;
@@ -156,7 +162,9 @@ namespace VRMaker
                 }
             }
         }
+        */
 
+        /*
         private static void ControllerMovementDirection(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -207,8 +215,9 @@ namespace VRMaker
                 return Vector3.ProjectOnPlane(vector, Vector3.up).normalized * vector.magnitude;
             });
         }
+        */
 
-
+        /*
         private static void DisableControllerBinds(On.RoR2.UI.InputBindingControl.orig_Awake orig, InputBindingControl self)
         {
             orig(self);
@@ -219,12 +228,13 @@ namespace VRMaker
                 self.button = null;
             }
         }
+        */
 
         private static void SetupControllerInputs()
         {
             vrControllers = RewiredAddons.CreateRewiredController();
             vrUIMap = RewiredAddons.CreateUIMap(vrControllers.id);
-            vrGameplayMap = RewiredAddons.CreateGameplayMap(vrControllers.id);
+            //vrGameplayMap = RewiredAddons.CreateGameplayMap(vrControllers.id);
 
                 inputs = new BaseInput[]
                 {
@@ -241,14 +251,36 @@ namespace VRMaker
                 };
         }
 
-        private static void Update()
+        public static void Update()
         {
+            Logs.WriteInfo("Controllers.Update called");
             if (!initializedMainPlayer)
             {
-                if (AddVRController(LocalUserManager.GetRewiredMainPlayer()))
+                //if (AddVRController(ReInput.players.GetPlayer(0)))
+                //if (AddVRController(ReInput.players.GetSystemPlayer()))
+                Logs.WriteInfo("allPlayerCount: ");
+                Logs.WriteInfo(ReInput.players.allPlayerCount);
+                Player p = null;
+                for (int i = 0; i < ReInput.players.allPlayerCount; i++)
+                {
+                    p = ReInput.players.AllPlayers[i];
+                    if (p != null)
+                    {
+                        Logs.WriteInfo("found non null Player p with name: ");
+                        Logs.WriteInfo(p.name);
+                        break;
+                    }
+                        
+                }
+
+                if (AddVRController(p))
+                {
                     initializedMainPlayer = true;
+                    Logs.WriteInfo("VRController successfully added");
+                }
             }
 
+            /*
             LocalUser localUser = LocalUserManager.GetFirstLocalUser();
 
             if (localUser != null)
@@ -259,6 +291,7 @@ namespace VRMaker
                     RoR2Application.onUpdate -= Update;
                 }
             }
+            */
         }
 
         internal static bool AddVRController(Player inputPlayer)
@@ -286,6 +319,7 @@ namespace VRMaker
 
         private static void UpdateVRInputs()
         {
+            /*
             if (ModConfig.InitialOculusModeValue)
             {
                 string[] joyNames = Input.GetJoystickNames();
@@ -328,6 +362,7 @@ namespace VRMaker
                     else vrControllers.ClearButtonValueById(i);
                 }
             }
+            */
 
             foreach (BaseInput input in inputs)
             {
