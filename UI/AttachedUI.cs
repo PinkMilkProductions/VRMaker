@@ -24,7 +24,7 @@ namespace VRMaker
         {
             UpdateTransform();
             // The only way i seem to call this stuff
-            Logs.WriteInfo("Update hook called");
+            //Logs.WriteInfo("Update hook called");
             Controllers.Update();
         }
 

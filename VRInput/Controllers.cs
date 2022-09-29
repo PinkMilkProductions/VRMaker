@@ -17,7 +17,9 @@ namespace VRMaker
 {
     public static class Controllers
     {
-        
+        public static bool ControllersAlreadyInit = false;
+
+
         private static CustomController vrControllers;
         private static CustomControllerMap vrGameplayMap;
         private static CustomControllerMap vrUIMap;
@@ -36,28 +38,34 @@ namespace VRMaker
 
         internal static void Init()
         {
-            ReInput.InputSourceUpdateEvent += UpdateVRInputs;
-
-            //RoR2Application.onUpdate += Update;
-
-            //On.RoR2.UI.InputBindingControl.Awake += DisableControllerBinds;
-
-
-            //IL.RoR2.PlayerCharacterMasterController.Update += ControllerMovementDirection;
-
-            /*
-            On.RoR2.UI.MainMenu.ProfileMainMenuScreen.SetMainProfile += (orig, self, profile) =>
+            if (!ControllersAlreadyInit)
             {
-                orig(self, profile);
-                if (initializedLocalUser)
-                {
-                    initializedLocalUser = false;
-                    RoR2Application.onUpdate += Update;
-                }
-            };
-            */
 
-            SetupControllerInputs();
+
+                ReInput.InputSourceUpdateEvent += UpdateVRInputs;
+
+                //RoR2Application.onUpdate += Update;
+
+                //On.RoR2.UI.InputBindingControl.Awake += DisableControllerBinds;
+
+
+                //IL.RoR2.PlayerCharacterMasterController.Update += ControllerMovementDirection;
+
+                /*
+                On.RoR2.UI.MainMenu.ProfileMainMenuScreen.SetMainProfile += (orig, self, profile) =>
+                {
+                    orig(self, profile);
+                    if (initializedLocalUser)
+                    {
+                        initializedLocalUser = false;
+                        RoR2Application.onUpdate += Update;
+                    }
+                };
+                */
+
+                SetupControllerInputs();
+                ControllersAlreadyInit = true;
+            }
         }
 
         
@@ -253,7 +261,7 @@ namespace VRMaker
 
         public static void Update()
         {
-            Logs.WriteInfo("Controllers.Update called");
+            //Logs.WriteInfo("Controllers.Update called");
             if (!initializedMainPlayer)
             {
                 //if (AddVRController(ReInput.players.GetPlayer(0)))
@@ -306,15 +314,16 @@ namespace VRMaker
             {
                 if (inputPlayer.controllers.maps.GetMap(ControllerType.Custom, vrControllers.id, 2, 0) == null)
                     inputPlayer.controllers.maps.AddMap(vrControllers, vrUIMap);
-                if (inputPlayer.controllers.maps.GetMap(ControllerType.Custom, vrControllers.id, 0, 0) == null)
-                    inputPlayer.controllers.maps.AddMap(vrControllers, vrGameplayMap);
-                if (!vrGameplayMap.enabled)
-                    vrGameplayMap.enabled = true;
+                //if (inputPlayer.controllers.maps.GetMap(ControllerType.Custom, vrControllers.id, 0, 0) == null)
+                //    inputPlayer.controllers.maps.AddMap(vrControllers, vrGameplayMap);
+                //if (!vrGameplayMap.enabled)
+                //    vrGameplayMap.enabled = true;
                 if (!vrUIMap.enabled)
                     vrUIMap.enabled = true;
             }
 
-            return inputPlayer.controllers.ContainsController(vrControllers) && inputPlayer.controllers.maps.GetAllMaps(ControllerType.Custom).ToList().Count >= 2;
+            //return inputPlayer.controllers.ContainsController(vrControllers) && inputPlayer.controllers.maps.GetAllMaps(ControllerType.Custom).ToList().Count >= 2;
+            return inputPlayer.controllers.ContainsController(vrControllers) && inputPlayer.controllers.maps.GetAllMaps(ControllerType.Custom).ToList().Count >= 1;
         }
 
         private static void UpdateVRInputs()

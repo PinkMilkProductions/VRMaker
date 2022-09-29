@@ -56,6 +56,9 @@ namespace VRMaker
                 //    AttachedUi.Create<InteractiveUi>(canvas, StageInstance.GetInteractiveUiTarget(), 0.002f);
                 //else
                 AttachedUi.Create<StaticUi>(canvas, 0.00045f);
+
+                // Test
+                Controllers.Init();
             }
             catch (Exception exception)
             {
