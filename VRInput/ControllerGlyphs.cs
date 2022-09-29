@@ -1,6 +1,6 @@
 ﻿using Rewired;
-using RoR2;
-using RoR2.UI;
+//using RoR2;
+//using RoR2.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +13,7 @@ namespace VRMod
 {
     internal static class ControllerGlyphs
     {
+        /*
         internal static readonly string[] standardGlyphs = new string[]
         {
             "<sprite name=\"texVRGlyphs_LStick\">",          //MoveX
@@ -252,5 +253,6 @@ namespace VRMod
 
             return currentGlyphs[index];
         }
+        */
     }
 }

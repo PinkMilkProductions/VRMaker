@@ -1,17 +1,17 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Rewired;
-using RoR2;
-using RoR2.GamepadVibration;
-using RoR2.UI;
+//using RoR2;
+//using RoR2.GamepadVibration;
+//using RoR2.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
 using Valve.VR;
-using VRMod.Inputs;
-using VRMod.Inputs.Legacy;
+//using VRMod.Inputs;
+//using VRMod.Inputs.Legacy;
 
 namespace VRMaker
 {
@@ -24,12 +24,6 @@ namespace VRMaker
         private static bool hasRecentered;
         private static bool initializedMainPlayer;
         private static bool initializedLocalUser;
-
-        private static List<SkillBindingOverride> skillBindingOverrides = new List<SkillBindingOverride>()
-        {
-            new SkillBindingOverride("LoaderBody", SkillSlot.Primary, SkillSlot.Secondary, SkillSlot.Special, SkillSlot.Utility),
-            new SkillBindingOverride("RailgunnerBody", SkillSlot.Primary, SkillSlot.Utility, SkillSlot.Special, SkillSlot.Secondary)
-        };
 
         private static BaseInput[] inputs;
         private static List<BaseInput> modInputs = new List<BaseInput>();
@@ -47,10 +41,6 @@ namespace VRMaker
 
             On.RoR2.UI.InputBindingControl.Awake += DisableControllerBinds;
 
-            if (ModConfig.InitialMotionControlsValue)
-                On.RoR2.UI.MainMenu.MainMenuController.Start += ShowRecenterDialog;
-
-            On.RoR2.GamepadVibration.GamepadVibrationManager.Update += VRHaptics;
 
             IL.RoR2.PlayerCharacterMasterController.Update += ControllerMovementDirection;
 
@@ -67,86 +57,9 @@ namespace VRMaker
             SetupControllerInputs();
         }
 
-        private static void VRHaptics(On.RoR2.GamepadVibration.GamepadVibrationManager.orig_Update orig)
-        {
-            orig();
+        
 
-            if (Utils.localUserProfile == null || Utils.localCameraRig == null || Utils.localInputPlayer == null || Utils.localInputPlayer.controllers.GetLastActiveController() == null || Utils.localInputPlayer.controllers.GetLastActiveController().type != ControllerType.Custom) return;
 
-            VibrationContext context = new VibrationContext();
-            context.localUser = LocalUserManager.GetFirstLocalUser();
-            context.cameraRigController = Utils.localCameraRig;
-            context.userVibrationScale = Utils.localUserProfile.gamepadVibrationScale;
-
-            float motorValue = context.CalcCamDisplacementMagnitude() * context.userVibrationScale;
-
-            if (ModConfig.InitialOculusModeValue)
-            {
-                InputDevice leftHand = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
-                InputDevice rightHand = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
-
-                HapticCapabilities capabilities;
-
-                if (leftHand.TryGetHapticCapabilities(out capabilities))
-                {
-                    if (capabilities.supportsImpulse)
-                    {
-                        leftHand.SendHapticImpulse(0, motorValue, Time.deltaTime);
-                    }
-                }
-                if (rightHand.TryGetHapticCapabilities(out capabilities))
-                {
-                    if (capabilities.supportsImpulse)
-                    {
-                        rightHand.SendHapticImpulse(0, motorValue, Time.deltaTime);
-                    }
-                }
-            }
-            else
-            {
-                SteamVR_Actions.gameplay_Haptic.Execute(0, 0, 80, motorValue, SteamVR_Input_Sources.LeftHand);
-                SteamVR_Actions.gameplay_Haptic.Execute(0, 0, 80, motorValue, SteamVR_Input_Sources.RightHand);
-            }
-        }
-
-        [Obsolete("Deprecated. Use AddSkillBindingOverride instead.")]
-        public static void AddSkillRemap(string bodyName, SkillSlot skill1, SkillSlot skill2)
-        {
-            if (skillBindingOverrides.Exists(x => x.bodyName == bodyName))
-            {
-                throw new ArgumentException("VR Mod: Cannot add multiple skill binding overrides on the same body.");
-            }
-
-            if (skill1 == SkillSlot.None || skill2 == SkillSlot.None)
-            {
-                throw new ArgumentException("VR Mod: Cannot override a skill binding with None.");
-            }
-
-            SkillSlot[] skillSlots = new SkillSlot[] { SkillSlot.Primary, SkillSlot.Secondary, SkillSlot.Utility, SkillSlot.Special };
-
-            int skill1Index = Array.IndexOf(skillSlots, skill1);
-            int skill2Index = Array.IndexOf(skillSlots, skill2);
-
-            skillSlots[skill1Index] = skill2;
-            skillSlots[skill2Index] = skill1;
-
-            AddSkillBindingOverride(bodyName, skillSlots[0], skillSlots[1], skillSlots[2], skillSlots[3]);
-        }
-
-        public static void AddSkillBindingOverride(string bodyName, SkillSlot dominantTrigger, SkillSlot nonDominantTrigger, SkillSlot nonDominantGrip, SkillSlot dominantGrip)
-        {
-            if (skillBindingOverrides.Exists(x => x.bodyName == bodyName))
-            {
-                throw new ArgumentException("VR Mod: Cannot add multiple skill binding overrides on the same body.");
-            }
-
-            if (dominantTrigger == SkillSlot.None || nonDominantTrigger == SkillSlot.None || nonDominantGrip == SkillSlot.None || dominantGrip == SkillSlot.None)
-            {
-                throw new ArgumentException("VR Mod: Cannot override a skill binding with None.");
-            }
-
-            skillBindingOverrides.Add(new SkillBindingOverride(bodyName, dominantTrigger, nonDominantTrigger, nonDominantGrip, dominantGrip));
-        }
 
         internal static void ApplyRemaps(string bodyName)
         {
@@ -294,33 +207,6 @@ namespace VRMaker
             });
         }
 
-        private static void ShowRecenterDialog(On.RoR2.UI.MainMenu.MainMenuController.orig_Start orig, RoR2.UI.MainMenu.MainMenuController self)
-        {
-            orig(self);
-
-            if (hasRecentered) return;
-
-            hasRecentered = true;
-
-            string glyphString = ControllerGlyphs.GetGlyph(25);
-
-            SimpleDialogBox dialogBox = SimpleDialogBox.Create(null);
-            dialogBox.headerToken = new SimpleDialogBox.TokenParamsPair()
-            {
-                token = "Recenter",
-                formatParams = null
-            };
-
-            ControllerGlyphs.ApplySpriteAsset(dialogBox.descriptionLabel);
-
-            dialogBox.descriptionToken = new SimpleDialogBox.TokenParamsPair()
-            {
-                token = "Use {0} to recenter your HMD.",
-                formatParams = new object[] { glyphString }
-            };
-
-            dialogBox.AddCancelButton(CommonLanguageTokens.ok, Array.Empty<object>());
-        }
 
         private static void DisableControllerBinds(On.RoR2.UI.InputBindingControl.orig_Awake orig, InputBindingControl self)
         {
@@ -339,28 +225,6 @@ namespace VRMaker
             vrUIMap = RewiredAddons.CreateUIMap(vrControllers.id);
             vrGameplayMap = RewiredAddons.CreateGameplayMap(vrControllers.id);
 
-            if (ModConfig.InitialOculusModeValue)
-            {
-                inputs = new BaseInput[]
-                {
-                    new LegacyAxisInput(true, 0, false, 0), //LJoyX = MoveHor
-                    new LegacyAxisInput(true, 1, true, 1), //LJoyY = MoveVer
-                    new LegacyAxisInput(false, 3, false, 2), //RJoyX = LookHor
-                    new LegacyAxisInput(false, 4, true, 3), //RJoyY = LookVer
-                    new LegacyButtonInput(true, 2, 12, 17), //X = Equipment, Submit
-                    new LegacyReleaseAndHoldableButtonInput(true, 3, 24, 15), //Y = Pause, (Hold)Scoreboard/Profile
-                    new LegacyButtonInput(false, 0, 6, 17), //A = Interact, Submit
-                    new LegacyButtonInput(false, 1, 7), //B = Jump
-                    new LegacyButtonInput(true, 8, 13), //LClick = Sprint
-                    new LegacyButtonInput(false, 9, 14, 25), //RClick = Ping, Recenter
-                    new LegacyAxisToButtonInput(true, 8, 9, 17), //LTrigger = Secondary, Submit
-                    new LegacyAxisToButtonInput(true, 10, 10), //LGrip = Utility
-                    new LegacyAxisToButtonInput(false, 9, 8, 17), //RTrigger = Primary, Submit
-                    new LegacyAxisToButtonInput(false, 11, 11) //RGrip = Special
-                };
-            }
-            else
-            {
                 inputs = new BaseInput[]
                 {
                     new VectorInput(SteamVR_Actions.gameplay_Move, 0, 1),
@@ -386,29 +250,6 @@ namespace VRMaker
                     new ReleaseButtonInput(SteamVR_Actions.ui_Pause, 24),
                     new ButtonInput(SteamVR_Actions.ui_RecenterHMD, 25)
                 };
-
-                var plugins = BepInEx.Bootstrap.Chainloader.PluginInfos;
-
-                if (plugins.ContainsKey("com.KingEnderBrine.ExtraSkillSlots"))
-                {
-                    modInputs.Add(new ButtonInput(SteamVR_Actions.gameplay_ExtraSkill1, 26));
-                    modInputs.Add(new ButtonInput(SteamVR_Actions.gameplay_ExtraSkill2, 27));
-                    modInputs.Add(new ButtonInput(SteamVR_Actions.gameplay_ExtraSkill3, 28));
-                    modInputs.Add(new ButtonInput(SteamVR_Actions.gameplay_ExtraSkill4, 29));
-                }
-                if (plugins.ContainsKey("com.evaisa.r2voicechat"))
-                {
-                    modInputs.Add(new ButtonInput(SteamVR_Actions.gameplay_PushToTalk, 30));
-                }
-                if (plugins.ContainsKey("com.cwmlolzlz.skills"))
-                {
-                    modInputs.Add(new ButtonInput(SteamVR_Actions.gameplay_BuySkill, 31));
-                }
-                if (plugins.ContainsKey("com.KingEnderBrine.ProperSave"))
-                {
-                    modInputs.Add(new ButtonInput(SteamVR_Actions.ui_ProperSaveLoad, 32));
-                }
-            }
         }
 
         private static void Update()
@@ -507,24 +348,6 @@ namespace VRMaker
             foreach (BaseInput input in modInputs)
             {
                 input.UpdateValues(vrControllers);
-            }
-        }
-
-        public struct SkillBindingOverride
-        {
-            public string bodyName;
-            public SkillSlot dominantTrigger;
-            public SkillSlot nonDominantTrigger;
-            public SkillSlot nonDominantGrip;
-            public SkillSlot dominantGrip;
-
-            public SkillBindingOverride(string bodyName, SkillSlot dominantTrigger, SkillSlot nonDominantTrigger, SkillSlot nonDominantGrip, SkillSlot dominantGrip)
-            {
-                this.bodyName = bodyName;
-                this.dominantTrigger = dominantTrigger;
-                this.nonDominantTrigger = nonDominantTrigger;
-                this.nonDominantGrip = nonDominantGrip;
-                this.dominantGrip = dominantGrip;
             }
         }
     }

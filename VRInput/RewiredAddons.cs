@@ -70,12 +70,12 @@ namespace VRMaker
                 },
                 new HardwareAxisInfo[]
                 {
-                    new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, 0, SpecialAxisType.None),
-                    new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, 0, SpecialAxisType.None),
-                    new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, 0, SpecialAxisType.None),
-                    new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, 0, SpecialAxisType.None),
-                    new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, 0, SpecialAxisType.None),
-                    new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, 0, SpecialAxisType.None)
+                    new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, SpecialAxisType.None),
+                    new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, SpecialAxisType.None),
+                    new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, SpecialAxisType.None),
+                    new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, SpecialAxisType.None),
+                    new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, SpecialAxisType.None),
+                    new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, SpecialAxisType.None)
                 },
                 new HardwareButtonInfo[] { },
                 null
@@ -153,10 +153,10 @@ namespace VRMaker
                 new ActionElementMap(4 , ControllerElementType.Button, 7 , Pole.Positive, AxisRange.Full, false), //Jump
                 new ActionElementMap(5 , ControllerElementType.Button, 6, Pole.Positive, AxisRange.Full, false), //Interact
                 new ActionElementMap(6 , ControllerElementType.Button, 12 , Pole.Positive, AxisRange.Full, false), //Equipment
-                new ActionElementMap(7 , ControllerElementType.Button, (ModConfig.LeftDominantHand.Value ? 9 : 8) , Pole.Positive, AxisRange.Full, false), //Primary
-                new ActionElementMap(8 , ControllerElementType.Button, (ModConfig.LeftDominantHand.Value ? 8 : 9) , Pole.Positive, AxisRange.Full, false), //Secondary
-                new ActionElementMap(9 , ControllerElementType.Button, (ModConfig.LeftDominantHand.Value ? 11 : 10) , Pole.Positive, AxisRange.Full, false), //Utility
-                new ActionElementMap(10, ControllerElementType.Button, (ModConfig.LeftDominantHand.Value ? 10 : 11) , Pole.Positive, AxisRange.Full, false), //Special
+                new ActionElementMap(7 , ControllerElementType.Button, 8 , Pole.Positive, AxisRange.Full, false), //Primary
+                new ActionElementMap(8 , ControllerElementType.Button, 9 , Pole.Positive, AxisRange.Full, false), //Secondary
+                new ActionElementMap(9 , ControllerElementType.Button, 10 , Pole.Positive, AxisRange.Full, false), //Utility
+                new ActionElementMap(10, ControllerElementType.Button, 11 , Pole.Positive, AxisRange.Full, false), //Special
                 new ActionElementMap(18, ControllerElementType.Button, 13, Pole.Positive, AxisRange.Full, false), //Sprint
                 new ActionElementMap(19, ControllerElementType.Button, 15, Pole.Positive, AxisRange.Full, false), //Scoreboard or Profile
                 new ActionElementMap(28, ControllerElementType.Button, 14, Pole.Positive, AxisRange.Full, false), //Ping

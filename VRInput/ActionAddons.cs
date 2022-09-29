@@ -2,7 +2,7 @@
 using Rewired;
 using Rewired.Data;
 using Rewired.Data.Mapping;
-using RoR2;
+//using RoR2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +13,8 @@ namespace VRMaker
     //Thank you KingEnderBrine. Your code from ExtraSkillSlots have been greatly helpful for this part.
     internal static class ActionAddons
     {
+        /*
+        
         internal static readonly ActionDef[] actionDefs = new ActionDef[]
         {
             new ActionDef() { id = 150, actionName = "RecenterHMD", token = "ACTION_RECENTER", actionType = InputActionType.Button, hasPosAndNeg = false, joystickMap = ControllerInput.DPadUp, keyboardMap = KeyboardKeyCode.RightControl }
@@ -207,5 +209,7 @@ namespace VRMaker
             RightMouseButton,
             MiddleMouseButton
         }
+        */
     }
+    
 }
