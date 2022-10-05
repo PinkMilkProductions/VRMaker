@@ -21,6 +21,8 @@ namespace VRMaker
         internal override void UpdateValues(CustomController vrController)
         {
             vrController.SetButtonValueById(buttonID, buttonAction.state);
+            //Logs.WriteInfo("Is Button down?: ");
+            //Logs.WriteInfo(vrController.GetButtonDownById(buttonID));
         }
     }
 }

@@ -35,8 +35,12 @@ namespace VRMaker
 
         private void UpdateTransform()
         {
-            transform.position = Game.GetCamera().transform.position + Game.GetCamera().transform.forward;
-            transform.rotation = Game.GetCamera().transform.rotation;
+            if (Game.GetCamera())
+            {
+                transform.position = Game.GetCamera().transform.position + Game.GetCamera().transform.forward;
+                transform.rotation = Game.GetCamera().transform.rotation;
+            }
+            
         }
     }
 }

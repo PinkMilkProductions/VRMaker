@@ -53,8 +53,6 @@ namespace VRMaker
             HMDModel = UnityEngine.XR.XRDevice.model;
             Logs.WriteInfo(HMDModel);
 
-            //Controllers.Init();
-
         }
 
     }

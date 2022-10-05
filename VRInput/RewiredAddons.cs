@@ -161,6 +161,19 @@ namespace VRMaker
                 newElementMap.invert = elementMap.invert;
             }
 
+            Logs.WriteInfo("newMap name: ");
+            Logs.WriteInfo(newMap.name);
+
+            foreach (ActionElementMap testmap in newMap.actionElementMaps)
+            {
+                Logs.WriteInfo("action ID: ");
+                Logs.WriteInfo(testmap.actionId);
+                Logs.WriteInfo("elementIdentifierID: ");
+                Logs.WriteInfo(testmap.elementIdentifierId);
+                Logs.WriteInfo("elementType: ");
+                Logs.WriteInfo(testmap.elementType);
+            }
+
             return ReInput.UserData.fmpEtOISxUiBDFMiRddLezwxpaK(categoryId, controllerId, 0);
         }
         

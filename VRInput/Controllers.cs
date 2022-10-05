@@ -269,17 +269,18 @@ namespace VRMaker
                 Logs.WriteInfo("allPlayerCount: ");
                 Logs.WriteInfo(ReInput.players.allPlayerCount);
                 Player p = null;
-                for (int i = 0; i < ReInput.players.allPlayerCount; i++)
-                {
-                    p = ReInput.players.AllPlayers[i];
-                    if (p != null)
-                    {
-                        Logs.WriteInfo("found non null Player p with name: ");
-                        Logs.WriteInfo(p.name);
-                        break;
-                    }
-                        
-                }
+                //for (int i = 0; i < ReInput.players.allPlayerCount; i++)
+                //{
+                //    p = ReInput.players.AllPlayers[i];
+                //    if (p != null)
+                //    {
+                //        Logs.WriteInfo("found non null Player p with name: ");
+                //        Logs.WriteInfo(p.name);
+                //        break;
+                //    }
+
+                //}
+                p = Kingmaker.Assets.Console.GamepadInput.GamePad.Instance.Player;
 
                 if (AddVRController(p))
                 {
@@ -372,7 +373,7 @@ namespace VRMaker
                 }
             }
             */
-
+            
             foreach (BaseInput input in inputs)
             {
                 input.UpdateValues(vrControllers);
