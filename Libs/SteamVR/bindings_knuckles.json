@@ -46,15 +46,6 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/game_group"
-                  }
-               },
-               "mode" : "trigger",
-               "path" : "/user/hand/left/input/trigger"
-            },
-            {
-               "inputs" : {
-                  "click" : {
                      "output" : "/actions/default/in/game_switchpov"
                   },
                   "position" : {
@@ -67,14 +58,8 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/game_menus"
-                  }
-               },
-               "mode" : "trigger",
-               "path" : "/user/hand/right/input/trigger"
-            },
-            {
-               "inputs" : {
+                     "output" : "/actions/default/in/game_halt"
+                  },
                   "position" : {
                      "output" : "/actions/default/in/game_turncamera"
                   }
@@ -85,7 +70,7 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/game_halt"
+                     "output" : "/actions/default/in/game_actionbar"
                   }
                },
                "mode" : "button",
@@ -111,30 +96,12 @@
             },
             {
                "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/ui_confirm"
-                  }
-               },
-               "mode" : "trigger",
-               "path" : "/user/hand/left/input/trigger"
-            },
-            {
-               "inputs" : {
                   "position" : {
                      "output" : "/actions/default/in/ui_navigate"
                   }
                },
                "mode" : "joystick",
                "path" : "/user/hand/left/input/thumbstick"
-            },
-            {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/game_actionbar"
-                  }
-               },
-               "mode" : "button",
-               "path" : "/user/hand/right/input/b"
             },
             {
                "inputs" : {
@@ -171,6 +138,24 @@
                },
                "mode" : "grab",
                "path" : "/user/hand/right/input/grip"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/default/in/game_group"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/trigger"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/default/in/game_menus"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/trigger"
             }
          ]
       },

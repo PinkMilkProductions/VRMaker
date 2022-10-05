@@ -242,7 +242,7 @@ namespace VRMaker
         {
             vrControllers = RewiredAddons.CreateRewiredController();
             vrUIMap = RewiredAddons.CreateUIMap(vrControllers.id);
-            //vrGameplayMap = RewiredAddons.CreateGameplayMap(vrControllers.id);
+            vrGameplayMap = RewiredAddons.CreateGameplayMap(vrControllers.id);
 
                 inputs = new BaseInput[]
                 {
@@ -255,7 +255,8 @@ namespace VRMaker
                     new ButtonInput(SteamVR_Actions.default_game_group, 8),
                     new ButtonInput(SteamVR_Actions.default_game_menus, 9),
                     new ButtonInput(SteamVR_Actions.default_ui_confirm, 10),
-                    new ButtonInput(SteamVR_Actions.default_ui_back, 11)
+                    new ButtonInput(SteamVR_Actions.default_ui_back, 11),
+                    new VectorInput(SteamVR_Actions.default_game_turncamera, 12, 13)
                 };
         }
 
@@ -315,16 +316,16 @@ namespace VRMaker
             {
                 if (inputPlayer.controllers.maps.GetMap(ControllerType.Custom, vrControllers.id, 2, 0) == null)
                     inputPlayer.controllers.maps.AddMap(vrControllers, vrUIMap);
-                //if (inputPlayer.controllers.maps.GetMap(ControllerType.Custom, vrControllers.id, 0, 0) == null)
-                //    inputPlayer.controllers.maps.AddMap(vrControllers, vrGameplayMap);
-                //if (!vrGameplayMap.enabled)
-                //    vrGameplayMap.enabled = true;
+                if (inputPlayer.controllers.maps.GetMap(ControllerType.Custom, vrControllers.id, 0, 0) == null)
+                    inputPlayer.controllers.maps.AddMap(vrControllers, vrGameplayMap);
+                if (!vrGameplayMap.enabled)
+                    vrGameplayMap.enabled = true;
                 if (!vrUIMap.enabled)
                     vrUIMap.enabled = true;
             }
 
-            //return inputPlayer.controllers.ContainsController(vrControllers) && inputPlayer.controllers.maps.GetAllMaps(ControllerType.Custom).ToList().Count >= 2;
-            return inputPlayer.controllers.ContainsController(vrControllers) && inputPlayer.controllers.maps.GetAllMaps(ControllerType.Custom).ToList().Count >= 1;
+            return inputPlayer.controllers.ContainsController(vrControllers) && inputPlayer.controllers.maps.GetAllMaps(ControllerType.Custom).ToList().Count >= 2;
+            //return inputPlayer.controllers.ContainsController(vrControllers) && inputPlayer.controllers.maps.GetAllMaps(ControllerType.Custom).ToList().Count >= 1;
         }
 
         private static void UpdateVRInputs()
