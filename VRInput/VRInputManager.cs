@@ -18,7 +18,6 @@ namespace VRMaker
         public static void SetUpListeners()
         {
             // BOOLEANS
-            SteamVR_Actions._default.game_group.AddOnStateDownListener(TriggerLeftDown, SteamVR_Input_Sources.Any);
             SteamVR_Actions._default.game_grabright.AddOnStateDownListener(GrabRightDown, SteamVR_Input_Sources.Any);
             SteamVR_Actions._default.game_grabright.AddOnStateUpListener(GrabRightUp, SteamVR_Input_Sources.Any);
             SteamVR_Actions._default.game_grableft.AddOnStateDownListener(GrabLeftDown, SteamVR_Input_Sources.Any);
@@ -44,7 +43,7 @@ namespace VRMaker
 
         public static void TriggerLeftDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
         {
-            Logs.WriteInfo("TriggerLeft is Down");
+            //Logs.WriteInfo("TriggerLeft is Down");
             LogBinds();
         }
 
@@ -113,29 +112,7 @@ namespace VRMaker
 
         public static void LogBinds()
         {
-            var MyGamePad = Kingmaker.Assets.Console.GamepadInput.GamePad.Instance;
-            List<Kingmaker.Assets.Console.GamepadInput.InputLayer> MyInputLayers = MyGamePad.Layers;
-            foreach(var CurrentInputLayer in MyInputLayers)
-            {
-                Logs.WriteInfo("CurrentInputLayer.ContextName");
-                Logs.WriteInfo(CurrentInputLayer.ContextName);
-
-                List<Kingmaker.Assets.Console.GamepadInput.BindDescription> MyBindDescriptions = CurrentInputLayer.m_Binds;
-                foreach (var CurrentBindDescription in MyBindDescriptions)
-                {
-                    int actionId = CurrentBindDescription.ActionId;
-                    Logs.WriteInfo("ActionId");
-                    Logs.WriteInfo(actionId);
-                    Logs.WriteInfo("ActionId Name");
-                    Logs.WriteInfo(Rewired.ReInput.mapping.Actions[actionId].name);
-                    Logs.WriteInfo("ActionId DescriptiveName");
-                    Logs.WriteInfo(Rewired.ReInput.mapping.Actions[actionId].descriptiveName);
-                    Logs.WriteInfo("EventType");
-                    Logs.WriteInfo(CurrentBindDescription.EventType);
-                    Logs.WriteInfo("Group");
-                    Logs.WriteInfo(CurrentBindDescription.Group);
-                }
-            }
+            //Controllers.LogAllGameActions(Kingmaker.Assets.Console.GamepadInput.GamePad.Instance.Player);
         }
     }
 }

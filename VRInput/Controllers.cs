@@ -252,8 +252,8 @@ namespace VRMaker
                     new ButtonInput(SteamVR_Actions.default_game_actionbar, 5),
                     new ButtonInput(SteamVR_Actions.default_game_halt, 6),
                     new ButtonInput(SteamVR_Actions.default_game_pause, 7),
-                    new ButtonInput(SteamVR_Actions.default_game_group, 8),
-                    new ButtonInput(SteamVR_Actions.default_game_menus, 9),
+                    new AxisInput(SteamVR_Actions.default_game_group, 8),
+                    new AxisInput(SteamVR_Actions.default_game_menus, 9),
                     new ButtonInput(SteamVR_Actions.default_ui_confirm, 10),
                     new ButtonInput(SteamVR_Actions.default_ui_back, 11),
                     new VectorInput(SteamVR_Actions.default_game_turncamera, 12, 13)
@@ -385,6 +385,48 @@ namespace VRMaker
                 input.UpdateValues(vrControllers);
             }
         }
+
+        public static void LogAllGameActions(Rewired.Player player)
+        {
+            Logs.WriteInfo("LogAllGameActions started");
+            // All elements mapped to all joysticks in the player
+            foreach (Joystick j in player.controllers.Joysticks)
+            {
+
+                // Loop over all Joystick Maps in the Player for this Joystick
+                foreach (JoystickMap map in player.controllers.maps.GetMaps<JoystickMap>(j.id))
+                {
+
+                    // Loop over all button maps
+                    foreach (ActionElementMap aem in map.ButtonMaps)
+                    {
+                        Logs.WriteInfo(aem.elementIdentifierName + " is assigned to Button " + aem.elementIndex + " with the Action " + ReInput.mapping.GetAction(aem.actionId).name + " with actionId " + aem.actionId);
+                    }
+
+                    // Loop over all axis maps
+                    foreach (ActionElementMap aem in map.AxisMaps)
+                    {
+                        Logs.WriteInfo(aem.elementIdentifierName + " is assigned to Axis " + aem.elementIndex + " with the Action " + ReInput.mapping.GetAction(aem.actionId).name + " with actionId " + aem.actionId);
+                    }
+
+                    // Loop over all element maps of any type
+                    foreach (ActionElementMap aem in map.AllMaps)
+                    {
+                        if (aem.elementType == ControllerElementType.Axis)
+                        {
+                            Logs.WriteInfo(aem.elementIdentifierName + " is assigned to Axis " + aem.elementIndex + " with the Action " + ReInput.mapping.GetAction(aem.actionId).name + " with actionId " + aem.actionId);
+                        }
+                        else if (aem.elementType == ControllerElementType.Button)
+                        {
+                            Logs.WriteInfo(aem.elementIdentifierName + " is assigned to Button " + aem.elementIndex + " with the Action " + ReInput.mapping.GetAction(aem.actionId).name + " with actionId " + aem.actionId);
+                        }
+                    }
+                }
+            }
+            Logs.WriteInfo("LogAllGameActions ended");
+        }
+
+
         
     }
 }

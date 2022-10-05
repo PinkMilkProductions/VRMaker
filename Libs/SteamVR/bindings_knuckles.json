@@ -141,20 +141,20 @@
             },
             {
                "inputs" : {
-                  "click" : {
+                  "pull" : {
                      "output" : "/actions/default/in/game_group"
                   }
                },
-               "mode" : "button",
+               "mode" : "trigger",
                "path" : "/user/hand/left/input/trigger"
             },
             {
                "inputs" : {
-                  "click" : {
+                  "pull" : {
                      "output" : "/actions/default/in/game_menus"
                   }
                },
-               "mode" : "button",
+               "mode" : "trigger",
                "path" : "/user/hand/right/input/trigger"
             }
          ]

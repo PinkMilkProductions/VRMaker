@@ -56,11 +56,11 @@
     },
     {
       "name": "/actions/default/in/game_group",
-      "type": "boolean"
+      "type": "vector1"
     },
     {
       "name": "/actions/default/in/game_menus",
-      "type": "boolean"
+      "type": "vector1"
     },
     {
       "name": "/actions/default/in/game_switchpov",
