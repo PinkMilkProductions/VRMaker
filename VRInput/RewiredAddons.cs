@@ -103,20 +103,6 @@ namespace VRMaker
             return customController;
         }
 
-        // Not needed for now
-        //internal static CustomControllerMap CreateUIMap(int controllerID)
-        //{
-        //    List<ActionElementMap> uiElementMaps = new List<ActionElementMap>()
-        //    {
-        //        new ActionElementMap(0, ControllerElementType.Axis  , 0 , Pole.Positive, AxisRange.Full, false), //LeftStickX (UI X axis)
-        //        new ActionElementMap(1, ControllerElementType.Axis  , 1 , Pole.Positive, AxisRange.Full, false), //LeftStickY (UI Y axis)
-        //        new ActionElementMap(8, ControllerElementType.Button, 4 , Pole.Positive, AxisRange.Positive, false), //Confirm (UI Confirm)
-        //        new ActionElementMap(9 , ControllerElementType.Button, 5, Pole.Positive, AxisRange.Positive, false), //Decline
-        //    };
-
-        //    return CreateCustomMap("VRUI", 2, controllerID, uiElementMaps);
-        //}
-
 
         internal static CustomControllerMap CreateGameplayMap(int controllerID)
         {
@@ -165,19 +151,6 @@ namespace VRMaker
                     newElementMap.axisRange = elementMap.axisRange;
                 newElementMap.invert = elementMap.invert;
             }
-
-            //Logs.WriteInfo("newMap name: ");
-            //Logs.WriteInfo(newMap.name);
-
-            //foreach (ActionElementMap testmap in newMap.actionElementMaps)
-            //{
-            //    Logs.WriteInfo("action ID: ");
-            //    Logs.WriteInfo(testmap.actionId);
-            //    Logs.WriteInfo("elementIdentifierID: ");
-            //    Logs.WriteInfo(testmap.elementIdentifierId);
-            //    Logs.WriteInfo("elementType: ");
-            //    Logs.WriteInfo(testmap.elementType);
-            //}
 
             return ReInput.UserData.fmpEtOISxUiBDFMiRddLezwxpaK(categoryId, controllerId, 0);
         }
