@@ -19,59 +19,67 @@
       "type": "pose"
     },
     {
-      "name": "/actions/default/in/ui_confirm",
+      "name": "/actions/default/in/decline",
       "type": "boolean"
     },
     {
-      "name": "/actions/default/in/ui_back",
+      "name": "/actions/default/in/confirm",
       "type": "boolean"
     },
     {
-      "name": "/actions/default/in/ui_navigate",
+      "name": "/actions/default/in/actionbar",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/pause",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/move",
       "type": "vector2"
     },
     {
-      "name": "/actions/default/in/game_action_confirm",
-      "type": "boolean"
-    },
-    {
-      "name": "/actions/default/in/game_actionbar",
-      "type": "boolean"
-    },
-    {
-      "name": "/actions/default/in/game_pause",
-      "type": "boolean"
-    },
-    {
-      "name": "/actions/default/in/game_halt",
-      "type": "boolean"
-    },
-    {
-      "name": "/actions/default/in/game_move",
+      "name": "/actions/default/in/movecamera",
       "type": "vector2"
     },
     {
-      "name": "/actions/default/in/game_turncamera",
-      "type": "vector2"
-    },
-    {
-      "name": "/actions/default/in/game_group",
+      "name": "/actions/default/in/group",
       "type": "vector1"
     },
     {
-      "name": "/actions/default/in/game_menus",
+      "name": "/actions/default/in/menus",
       "type": "vector1"
     },
     {
-      "name": "/actions/default/in/game_switchpov",
+      "name": "/actions/default/in/switchpov",
       "type": "boolean"
     },
     {
-      "name": "/actions/default/in/game_grableft",
+      "name": "/actions/default/in/grableft",
       "type": "boolean"
     },
     {
-      "name": "/actions/default/in/game_grabright",
+      "name": "/actions/default/in/grabright",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/options",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/highlight",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/switchturnbased",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/nexttarget",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/prevtarget",
       "type": "boolean"
     },
     {
@@ -143,20 +151,22 @@
       "/actions/default/out/Haptic": "Haptic",
       "/actions/default/in/LeftHandPose": "Left Hand Pose",
       "/actions/default/in/RightHandPose": "Right Hand Pose",
-      "/actions/default/in/ui_confirm": "UI Confirm",
-      "/actions/default/in/ui_back": "UI Back",
-      "/actions/default/in/ui_navigate": "UI Navigate",
-      "/actions/default/in/game_action_confirm": "Game Action or Confirm",
-      "/actions/default/in/game_actionbar": "Game ActionBar",
-      "/actions/default/in/game_pause": "Game Pause",
-      "/actions/default/in/game_halt": "Game Halt Actions",
-      "/actions/default/in/game_move": "Game Move",
-      "/actions/default/in/game_turncamera": "Game POV Turn Camera",
-      "/actions/default/in/game_group": "Game Group",
-      "/actions/default/in/game_menus": "Game Menus",
-      "/actions/default/in/game_switchpov": "Game Switch POV",
-      "/actions/default/in/game_grableft": "Game Grab (Left)",
-      "/actions/default/in/game_grabright": "Game Grab (Right)"
+      "/actions/default/in/decline": "Decline",
+      "/actions/default/in/confirm": "Confirm",
+      "/actions/default/in/actionbar": "Toggle Actionbar",
+      "/actions/default/in/pause": "Pause game",
+      "/actions/default/in/move": "Move",
+      "/actions/default/in/movecamera": "Move Camera",
+      "/actions/default/in/group": "Group",
+      "/actions/default/in/menus": "Menus",
+      "/actions/default/in/switchpov": "Switch POV",
+      "/actions/default/in/grableft": "Grab (Left)",
+      "/actions/default/in/grabright": "Grab (Right)",
+      "/actions/default/in/options": "Options menu",
+      "/actions/default/in/highlight": "Highlight Objects",
+      "/actions/default/in/switchturnbased": "Switch Turn Based",
+      "/actions/default/in/nexttarget": "Next Target",
+      "/actions/default/in/prevtarget": "Previous Target"
     }
   ]
 }

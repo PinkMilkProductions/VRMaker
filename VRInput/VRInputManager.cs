@@ -18,15 +18,15 @@ namespace VRMaker
         public static void SetUpListeners()
         {
             // BOOLEANS
-            SteamVR_Actions._default.game_grabright.AddOnStateDownListener(GrabRightDown, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.game_grabright.AddOnStateUpListener(GrabRightUp, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.game_grableft.AddOnStateDownListener(GrabLeftDown, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.game_grableft.AddOnStateUpListener(GrabLeftUp, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.game_switchpov.AddOnStateDownListener(OnSwitchPOVDown, SteamVR_Input_Sources.Any);
+            SteamVR_Actions._default.grabright.AddOnStateDownListener(GrabRightDown, SteamVR_Input_Sources.Any);
+            SteamVR_Actions._default.grabright.AddOnStateUpListener(GrabRightUp, SteamVR_Input_Sources.Any);
+            SteamVR_Actions._default.grableft.AddOnStateDownListener(GrabLeftDown, SteamVR_Input_Sources.Any);
+            SteamVR_Actions._default.grableft.AddOnStateUpListener(GrabLeftUp, SteamVR_Input_Sources.Any);
+            SteamVR_Actions._default.switchpov.AddOnStateDownListener(OnSwitchPOVDown, SteamVR_Input_Sources.Any);
 
             // VECTOR 2Ds
-            SteamVR_Actions._default.game_move.AddOnUpdateListener(OnLeftJoystickUpdate, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.game_turncamera.AddOnUpdateListener(OnRightJoystickUpdate, SteamVR_Input_Sources.Any);
+            SteamVR_Actions._default.move.AddOnUpdateListener(OnLeftJoystickUpdate, SteamVR_Input_Sources.Any);
+            SteamVR_Actions._default.movecamera.AddOnUpdateListener(OnRightJoystickUpdate, SteamVR_Input_Sources.Any);
 
             // POSES
             SteamVR_Actions._default.RightHandPose.AddOnUpdateListener(SteamVR_Input_Sources.Any, UpdateRightHand);
@@ -41,11 +41,11 @@ namespace VRMaker
             CameraManager.SpawnHands();
         }
 
-        public static void TriggerLeftDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
-        {
-            //Logs.WriteInfo("TriggerLeft is Down");
-            LogBinds();
-        }
+        //public static void TriggerLeftDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
+        //{
+        //    //Logs.WriteInfo("TriggerLeft is Down");
+        //    LogBinds();
+        //}
 
         public static void GrabRightDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
         {
@@ -108,11 +108,11 @@ namespace VRMaker
         }
 
 
-        // GAMEPAD STUFF
+        //// GAMEPAD STUFF
 
-        public static void LogBinds()
-        {
-            //Controllers.LogAllGameActions(Kingmaker.Assets.Console.GamepadInput.GamePad.Instance.Player);
-        }
+        //public static void LogBinds()
+        //{
+        //    //Controllers.LogAllGameActions(Kingmaker.Assets.Console.GamepadInput.GamePad.Instance.Player);
+        //}
     }
 }

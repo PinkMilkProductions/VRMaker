@@ -17,18 +17,19 @@ namespace VRMaker
                 {
                     new ControllerElementIdentifier(0, "MoveX", "MoveXPos", "MoveXNeg", ControllerElementType.Axis, true),
                     new ControllerElementIdentifier(1, "MoveY", "MoveYPos", "MoveYNeg", ControllerElementType.Axis, true),
-                    new ControllerElementIdentifier(2, "LeftStickX", "NavigateXPos", "NavigateXNeg", ControllerElementType.Axis, true),
-                    new ControllerElementIdentifier(3, "LeftStickY", "NavigateYPos", "NavigateYNeg", ControllerElementType.Axis, true),
-                    new ControllerElementIdentifier(4, "action_confirm", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(5, "actionbar", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(6, "halt", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(7, "pause", "", "", ControllerElementType.Button, true),
+                    new ControllerElementIdentifier(2, "MoveCameraX", "MoveCameraXPos", "MoveCameraXNeg", ControllerElementType.Axis, true),
+                    new ControllerElementIdentifier(3, "MoveCameraY", "MoveCameraYPos", "MoveCameraYNeg", ControllerElementType.Axis, true),
+                    new ControllerElementIdentifier(4, "confirm", "", "", ControllerElementType.Button, true),
+                    new ControllerElementIdentifier(5, "decline", "", "", ControllerElementType.Button, true),
+                    new ControllerElementIdentifier(6, "pause", "", "", ControllerElementType.Button, true),
+                    new ControllerElementIdentifier(7, "actionbar", "", "", ControllerElementType.Button, true),
                     new ControllerElementIdentifier(8, "group", "groupPos", "groupNeg", ControllerElementType.Axis, true),
                     new ControllerElementIdentifier(9, "menus", "menusPos", "menusNeg", ControllerElementType.Axis, true),
-                    new ControllerElementIdentifier(10, "Confirm", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(11, "Decline", "", "", ControllerElementType.Button, true),
-                    new ControllerElementIdentifier(12, "CameraX", "CameraXPos", "CameraXNeg", ControllerElementType.Axis, true),
-                    new ControllerElementIdentifier(13, "CameraY", "CameraYPos", "CameraYNeg", ControllerElementType.Axis, true),
+                    new ControllerElementIdentifier(10, "options", "", "", ControllerElementType.Button, true),
+                    new ControllerElementIdentifier(11, "highlight", "", "", ControllerElementType.Button, true),
+                    new ControllerElementIdentifier(12, "switchturnbased", "", "", ControllerElementType.Button, true),
+                    new ControllerElementIdentifier(13, "prevtarget", "", "", ControllerElementType.Button, true),
+                    new ControllerElementIdentifier(14, "nexttarget", "", "", ControllerElementType.Button, true)
                 },
                 new int[] { },
                 new int[] { },
@@ -39,9 +40,7 @@ namespace VRMaker
                     new AxisCalibrationData(true, 0.1f, 0, -1, 1, false, true),
                     new AxisCalibrationData(true, 0.1f, 0, -1, 1, false, true),
                     new AxisCalibrationData(true, 0.1f, 0, 0, 1, false, true), //analog trigger
-                    new AxisCalibrationData(true, 0.1f, 0, 0, 1, false, true), //analog trigger
-                    new AxisCalibrationData(true, 0.1f, 0, -1, 1, false, true),
-                    new AxisCalibrationData(true, 0.1f, 0, -1, 1, false, true)
+                    new AxisCalibrationData(true, 0.1f, 0, 0, 1, false, true) //analog trigger
                 },
                 new AxisRange[]
                 {
@@ -50,9 +49,7 @@ namespace VRMaker
                     AxisRange.Full,
                     AxisRange.Full,
                     AxisRange.Positive, //analog trigger
-                    AxisRange.Positive, //analog trigger
-                    AxisRange.Full,
-                    AxisRange.Full
+                    AxisRange.Positive //analog trigger
                 },
                 new HardwareAxisInfo[]
                 {
@@ -61,9 +58,7 @@ namespace VRMaker
                     new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, SpecialAxisType.None),
                     new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, SpecialAxisType.None),
                     new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, SpecialAxisType.None),  //analog trigger
-                    new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, SpecialAxisType.None),  //analog trigger
-                    new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, SpecialAxisType.None),
-                    new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, SpecialAxisType.None)
+                    new HardwareAxisInfo(AxisCoordinateMode.Absolute, false, SpecialAxisType.None)  //analog trigger
                 },
                 new HardwareButtonInfo[] { },
                 null
@@ -108,20 +103,21 @@ namespace VRMaker
             return customController;
         }
 
-        internal static CustomControllerMap CreateUIMap(int controllerID)
-        {
-            List<ActionElementMap> uiElementMaps = new List<ActionElementMap>()
-            {
-                new ActionElementMap(0, ControllerElementType.Axis  , 2 , Pole.Positive, AxisRange.Full, false), //LeftStickX (UI X axis)
-                new ActionElementMap(1, ControllerElementType.Axis  , 3 , Pole.Positive, AxisRange.Full, false), //LeftStickY (UI Y axis)
-                new ActionElementMap(8, ControllerElementType.Button, 10 , Pole.Positive, AxisRange.Positive, false), //Confirm (UI Confirm)
-                new ActionElementMap(9 , ControllerElementType.Button, 11, Pole.Positive, AxisRange.Positive, false), //Decline
-            };
+        // Not needed for now
+        //internal static CustomControllerMap CreateUIMap(int controllerID)
+        //{
+        //    List<ActionElementMap> uiElementMaps = new List<ActionElementMap>()
+        //    {
+        //        new ActionElementMap(0, ControllerElementType.Axis  , 0 , Pole.Positive, AxisRange.Full, false), //LeftStickX (UI X axis)
+        //        new ActionElementMap(1, ControllerElementType.Axis  , 1 , Pole.Positive, AxisRange.Full, false), //LeftStickY (UI Y axis)
+        //        new ActionElementMap(8, ControllerElementType.Button, 4 , Pole.Positive, AxisRange.Positive, false), //Confirm (UI Confirm)
+        //        new ActionElementMap(9 , ControllerElementType.Button, 5, Pole.Positive, AxisRange.Positive, false), //Decline
+        //    };
 
-            return CreateCustomMap("VRUI", 2, controllerID, uiElementMaps);
-        }
+        //    return CreateCustomMap("VRUI", 2, controllerID, uiElementMaps);
+        //}
 
-        
+
         internal static CustomControllerMap CreateGameplayMap(int controllerID)
         {
             
@@ -129,15 +125,19 @@ namespace VRMaker
             {
                 new ActionElementMap(0 , ControllerElementType.Axis  , 0 , Pole.Positive, AxisRange.Full, false), //MoveHor
                 new ActionElementMap(1 , ControllerElementType.Axis  , 1 , Pole.Positive, AxisRange.Full, false), //MoveVer
+                new ActionElementMap(2, ControllerElementType.Axis  , 2 , Pole.Positive, AxisRange.Full, false), //MoveCameraHor
+                new ActionElementMap(3, ControllerElementType.Axis  , 3 , Pole.Positive, AxisRange.Full, false), //MoveCameraVer
                 new ActionElementMap(8 , ControllerElementType.Button, 4 , Pole.Positive, AxisRange.Positive, false), //Confirm
-                new ActionElementMap(9 , ControllerElementType.Button, 11, Pole.Positive, AxisRange.Positive, false), //Decline
-                //new ActionElementMap(17 , ControllerElementType.Button, 5 , Pole.Positive, AxisRange.Positive, false), //FuncAdditional
-                new ActionElementMap(11 , ControllerElementType.Button, 5, Pole.Positive, AxisRange.Positive, false), //Func02 = Actionbar  (Temp using "Halt" button as Actionbar)
-                new ActionElementMap(10 , ControllerElementType.Button, 7, Pole.Positive, AxisRange.Positive, false), //Func01 = pause
-                new ActionElementMap(12 , ControllerElementType.Axis, 8, Pole.Positive, AxisRange.Positive, false), // LeftBottom = LeftTrigger
-                new ActionElementMap(13 , ControllerElementType.Button, 9, Pole.Positive, AxisRange.Positive, false), // RightBottom = Righttrigger
-                new ActionElementMap(2, ControllerElementType.Axis  , 12 , Pole.Positive, AxisRange.Full, false), //LookHor
-                new ActionElementMap(3, ControllerElementType.Axis  , 13 , Pole.Positive, AxisRange.Full, false), //LookVer
+                new ActionElementMap(9 , ControllerElementType.Button, 5, Pole.Positive, AxisRange.Positive, false), //Decline
+                new ActionElementMap(10 , ControllerElementType.Button, 6, Pole.Positive, AxisRange.Positive, false), //Func01 = pause
+                new ActionElementMap(11 , ControllerElementType.Button, 7, Pole.Positive, AxisRange.Positive, false), //Func02 = Actionbar
+                new ActionElementMap(12 , ControllerElementType.Axis, 8, Pole.Positive, AxisRange.Positive, false), // LeftBottom = group
+                new ActionElementMap(13 , ControllerElementType.Axis, 9, Pole.Positive, AxisRange.Positive, false), // RightBottom = menus
+                new ActionElementMap(16 , ControllerElementType.Button, 10, Pole.Positive, AxisRange.Positive, false), //Options
+                new ActionElementMap(18 , ControllerElementType.Button, 11, Pole.Positive, AxisRange.Positive, false), //Higlight
+                new ActionElementMap(19 , ControllerElementType.Button, 12, Pole.Positive, AxisRange.Positive, false), //Switch Turn Based
+                new ActionElementMap(14 , ControllerElementType.Button, 13, Pole.Positive, AxisRange.Positive, false), //Prev Target
+                new ActionElementMap(15 , ControllerElementType.Button, 14, Pole.Positive, AxisRange.Positive, false) //Next Target
             };
 
             return CreateCustomMap("VRDefault", 0, controllerID, defaultElementMaps);

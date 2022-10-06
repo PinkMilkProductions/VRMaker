@@ -46,10 +46,10 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/game_switchpov"
+                     "output" : "/actions/default/in/highlight"
                   },
                   "position" : {
-                     "output" : "/actions/default/in/game_move"
+                     "output" : "/actions/default/in/move"
                   }
                },
                "mode" : "joystick",
@@ -58,10 +58,10 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/game_halt"
+                     "output" : "/actions/default/in/switchturnbased"
                   },
                   "position" : {
-                     "output" : "/actions/default/in/game_turncamera"
+                     "output" : "/actions/default/in/movecamera"
                   }
                },
                "mode" : "joystick",
@@ -70,7 +70,10 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/game_actionbar"
+                     "output" : "/actions/default/in/actionbar"
+                  },
+                  "long" : {
+                     "output" : "/actions/default/in/options"
                   }
                },
                "mode" : "button",
@@ -79,7 +82,10 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/game_pause"
+                     "output" : "/actions/default/in/pause"
+                  },
+                  "long" : {
+                     "output" : "/actions/default/in/switchpov"
                   }
                },
                "mode" : "button",
@@ -88,7 +94,7 @@
             {
                "inputs" : {
                   "grab" : {
-                     "output" : "/actions/default/in/game_grableft"
+                     "output" : "/actions/default/in/grableft"
                   }
                },
                "mode" : "grab",
@@ -96,17 +102,8 @@
             },
             {
                "inputs" : {
-                  "position" : {
-                     "output" : "/actions/default/in/ui_navigate"
-                  }
-               },
-               "mode" : "joystick",
-               "path" : "/user/hand/left/input/thumbstick"
-            },
-            {
-               "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/ui_back"
+                     "output" : "/actions/default/in/decline"
                   }
                },
                "mode" : "button",
@@ -115,16 +112,7 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/game_action_confirm"
-                  }
-               },
-               "mode" : "button",
-               "path" : "/user/hand/right/input/a"
-            },
-            {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/ui_confirm"
+                     "output" : "/actions/default/in/confirm"
                   }
                },
                "mode" : "button",
@@ -133,7 +121,7 @@
             {
                "inputs" : {
                   "grab" : {
-                     "output" : "/actions/default/in/game_grabright"
+                     "output" : "/actions/default/in/grabright"
                   }
                },
                "mode" : "grab",
@@ -142,7 +130,7 @@
             {
                "inputs" : {
                   "pull" : {
-                     "output" : "/actions/default/in/game_group"
+                     "output" : "/actions/default/in/group"
                   }
                },
                "mode" : "trigger",
@@ -151,11 +139,26 @@
             {
                "inputs" : {
                   "pull" : {
-                     "output" : "/actions/default/in/game_menus"
+                     "output" : "/actions/default/in/menus"
                   }
                },
                "mode" : "trigger",
                "path" : "/user/hand/right/input/trigger"
+            },
+            {
+               "inputs" : {
+                  "east" : {
+                     "output" : "/actions/default/in/nexttarget"
+                  },
+                  "west" : {
+                     "output" : "/actions/default/in/prevtarget"
+                  }
+               },
+               "mode" : "dpad",
+               "parameters" : {
+                  "sub_mode" : "touch"
+               },
+               "path" : "/user/hand/right/input/thumbstick"
             }
          ]
       },

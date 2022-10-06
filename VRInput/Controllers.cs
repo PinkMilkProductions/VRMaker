@@ -241,22 +241,24 @@ namespace VRMaker
         private static void SetupControllerInputs()
         {
             vrControllers = RewiredAddons.CreateRewiredController();
-            vrUIMap = RewiredAddons.CreateUIMap(vrControllers.id);
+            //vrUIMap = RewiredAddons.CreateUIMap(vrControllers.id);
             vrGameplayMap = RewiredAddons.CreateGameplayMap(vrControllers.id);
 
                 inputs = new BaseInput[]
                 {
-                    new VectorInput(SteamVR_Actions.default_game_move, 0, 1),
-                    new VectorInput(SteamVR_Actions.default_ui_navigate, 2, 3),
-                    new ButtonInput(SteamVR_Actions.default_game_action_confirm, 4),
-                    new ButtonInput(SteamVR_Actions.default_game_actionbar, 5),
-                    new ButtonInput(SteamVR_Actions.default_game_halt, 6),
-                    new ButtonInput(SteamVR_Actions.default_game_pause, 7),
-                    new AxisInput(SteamVR_Actions.default_game_group, 8),
-                    new AxisInput(SteamVR_Actions.default_game_menus, 9),
-                    new ButtonInput(SteamVR_Actions.default_ui_confirm, 10),
-                    new ButtonInput(SteamVR_Actions.default_ui_back, 11),
-                    new VectorInput(SteamVR_Actions.default_game_turncamera, 12, 13)
+                    new VectorInput(SteamVR_Actions.default_move, 0, 1),
+                    new VectorInput(SteamVR_Actions.default_movecamera, 2, 3),
+                    new ButtonInput(SteamVR_Actions.default_confirm, 4),
+                    new ButtonInput(SteamVR_Actions.default_decline, 5),
+                    new ButtonInput(SteamVR_Actions.default_pause, 6),
+                    new ButtonInput(SteamVR_Actions.default_actionbar, 7),
+                    new AxisInput(SteamVR_Actions.default_group, 8),
+                    new AxisInput(SteamVR_Actions.default_menus, 9),
+                    new ButtonInput(SteamVR_Actions.default_options, 10),
+                    new ButtonInput(SteamVR_Actions.default_highlight, 11),
+                    new ButtonInput(SteamVR_Actions.default_switchturnbased, 12),
+                    new ButtonInput(SteamVR_Actions.default_prevtarget, 13),
+                    new ButtonInput(SteamVR_Actions.default_nexttarget, 14)
                 };
         }
 
@@ -312,20 +314,21 @@ namespace VRMaker
                 vrControllers.enabled = true;
             }
 
-            if (inputPlayer.controllers.maps.GetAllMaps(ControllerType.Custom).ToList().Count < 2)
+            //if (inputPlayer.controllers.maps.GetAllMaps(ControllerType.Custom).ToList().Count < 2)
+            if (inputPlayer.controllers.maps.GetAllMaps(ControllerType.Custom).ToList().Count < 1)
             {
-                if (inputPlayer.controllers.maps.GetMap(ControllerType.Custom, vrControllers.id, 2, 0) == null)
-                    inputPlayer.controllers.maps.AddMap(vrControllers, vrUIMap);
+            //    if (inputPlayer.controllers.maps.GetMap(ControllerType.Custom, vrControllers.id, 2, 0) == null)
+            //        inputPlayer.controllers.maps.AddMap(vrControllers, vrUIMap);
                 if (inputPlayer.controllers.maps.GetMap(ControllerType.Custom, vrControllers.id, 0, 0) == null)
                     inputPlayer.controllers.maps.AddMap(vrControllers, vrGameplayMap);
                 if (!vrGameplayMap.enabled)
                     vrGameplayMap.enabled = true;
-                if (!vrUIMap.enabled)
-                    vrUIMap.enabled = true;
+                //if (!vrUIMap.enabled)
+                //    vrUIMap.enabled = true;
             }
 
-            return inputPlayer.controllers.ContainsController(vrControllers) && inputPlayer.controllers.maps.GetAllMaps(ControllerType.Custom).ToList().Count >= 2;
-            //return inputPlayer.controllers.ContainsController(vrControllers) && inputPlayer.controllers.maps.GetAllMaps(ControllerType.Custom).ToList().Count >= 1;
+            //return inputPlayer.controllers.ContainsController(vrControllers) && inputPlayer.controllers.maps.GetAllMaps(ControllerType.Custom).ToList().Count >= 2;
+            return inputPlayer.controllers.ContainsController(vrControllers) && inputPlayer.controllers.maps.GetAllMaps(ControllerType.Custom).ToList().Count >= 1;
         }
 
         private static void UpdateVRInputs()
@@ -386,6 +389,8 @@ namespace VRMaker
             }
         }
 
+
+        // For printing the flatscreen game binds
         public static void LogAllGameActions(Rewired.Player player)
         {
             Logs.WriteInfo("LogAllGameActions started");
