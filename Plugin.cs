@@ -25,6 +25,8 @@ namespace VRMaker
         public static string gamePath = Path.GetDirectoryName(gameExePath);
         public static string HMDModel = "";
 
+        public static MBHelper MyHelper;
+
 
         private void Awake()
         {

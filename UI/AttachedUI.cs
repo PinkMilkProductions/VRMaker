@@ -12,20 +12,29 @@ namespace VRMaker
     {
         private Transform targetTransform;
 
-        public static void Create<TAttachedUi>(Canvas canvas, float scale = 0)
+        public static void Create<TAttachedUi>(Canvas canvas, Transform target, float scale = 0)
             where TAttachedUi : AttachedUi
         {
             var instance = canvas.gameObject.AddComponent<TAttachedUi>();
             if (scale > 0) canvas.transform.localScale = Vector3.one * scale;
             canvas.renderMode = RenderMode.WorldSpace;
+
+            instance.targetTransform = target;
         }
 
         protected virtual void Update()
         {
+            if (!targetTransform)
+            {
+                Logs.WriteWarning($"Target transform for AttachedUi {name} is missing, destroying");
+                Destroy(this);
+                return;
+            }
+
             UpdateTransform();
-            // The only way i seem to call this stuff
-            //Logs.WriteInfo("Update hook called");
-            Controllers.Update();
+            //// The only way i seem to call this stuff
+            ////Logs.WriteInfo("Update hook called");
+            //Controllers.Update();
         }
 
         public void SetTargetTransform(Transform target)
@@ -35,12 +44,15 @@ namespace VRMaker
 
         private void UpdateTransform()
         {
-            if (Game.GetCamera())
-            {
-                transform.position = Game.GetCamera().transform.position + Game.GetCamera().transform.forward;
-                transform.rotation = Game.GetCamera().transform.rotation;
-            }
-            
+            //if (Game.GetCamera())
+            //{
+            //    transform.position = Game.GetCamera().transform.position + Game.GetCamera().transform.forward;
+            //    transform.rotation = Game.GetCamera().transform.rotation;
+            //}
+
+            transform.position = targetTransform.position;
+            transform.rotation = targetTransform.rotation;
+
         }
     }
 }

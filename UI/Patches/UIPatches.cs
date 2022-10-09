@@ -17,6 +17,8 @@ namespace VRMaker
         {
             "BlackBars", // Cinematic black bars.
             "Camera" // Disposable camera.
+            //"Canvas", // This is used for the loading screen, do not disable
+            //"Console_StaticCanvas" // This is the main ingame HUD that behaves weirdly with our code
         };
 
         private static readonly string[] canvasesToIgnore =
@@ -28,7 +30,7 @@ namespace VRMaker
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Kingmaker.UI.UICanvas), "Start")]
-        private static void MoveCanvasesToWorldSpace(Kingmaker.UI.UICanvas __instance)
+        private static bool MoveCanvasesToWorldSpace(Kingmaker.UI.UICanvas __instance)
         {
             try
             {
@@ -36,17 +38,28 @@ namespace VRMaker
                 // because without it the map texture will some times be broken. Dunno why.
                 //if (!Camera.main || IsCanvasToIgnore(__instance.name)) return;
 
+                if (!Plugin.MyHelper)
+                    Plugin.MyHelper = MBHelper.Create();
+
                 var canvas = __instance.GetComponent<Canvas>(); ;
 
-                if (!canvas) return;
+                if (!canvas) return true;
 
                 if (IsCanvasToDisable(canvas.name))
                 {
                     canvas.enabled = false;
-                    return;
+                    return true;
                 }
 
-                if (canvas.renderMode != RenderMode.ScreenSpaceOverlay) return;
+                Logs.WriteInfo("Current Canvas name: " + canvas.name);
+
+                //if (canvas.name == "Console_StaticCanvas")
+                //{
+                //    canvas.enabled = false;
+                //    canvas.enabled = true;
+                //}
+
+                if (canvas.renderMode != RenderMode.ScreenSpaceOverlay) return true;
 
                 //LayerHelper.SetLayer(canvas, GameLayer.UI);
 
@@ -55,14 +68,20 @@ namespace VRMaker
                 //if (canvas.GetComponent<GraphicRaycaster>())
                 //    AttachedUi.Create<InteractiveUi>(canvas, StageInstance.GetInteractiveUiTarget(), 0.002f);
                 //else
-                AttachedUi.Create<StaticUi>(canvas, 0.00045f);
+                StaticUiTarget MyUiTarget = StaticUiTarget.Create(Plugin.MyHelper.gameObject.transform);
+                //MyUiTarget.SetUp(Kingmaker.Game.GetCamera());
+                MyUiTarget.SetUp(Kingmaker.Game.GetCamera());
+                AttachedUi.Create<StaticUi>(canvas, MyUiTarget.TargetTransform, 0.00045f);
 
-                // Test
-                Controllers.Init();
+                return false;
+
+                //// Test
+                //Controllers.Init();
             }
             catch (Exception exception)
             {
                 Logs.WriteWarning($"Failed to move canvas to world space ({__instance.name}): {exception}");
+                return true;
             }
         }
 
