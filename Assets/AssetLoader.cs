@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using BepInEx;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +11,8 @@ namespace VRMaker
 {
     class AssetLoader
     {
+        private const string assetsDir = "VRMakerAssets/AssetBundles/";
+
         public static GameObject Skybox;
         public static GameObject LeftHandBase;
         public static GameObject RightHandBase;
@@ -37,8 +41,9 @@ namespace VRMaker
         private static AssetBundle LoadBundle(string assetName)
         {
             var myLoadedAssetBundle =
-                AssetBundle.LoadFromFile(
-                    $"{Plugin.gamePath}/VRMaker/Assets/{assetName}");
+                AssetBundle.LoadFromFile(Path.Combine(Paths.PluginPath, Path.Combine(assetsDir, assetName)));
+
+            Logs.WriteInfo("PluginPath: " + Paths.PluginPath);
             if (myLoadedAssetBundle == null)
             {
                 Logs.WriteError($"Failed to load AssetBundle {assetName}");

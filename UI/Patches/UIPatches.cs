@@ -53,11 +53,12 @@ namespace VRMaker
 
                 Logs.WriteInfo("Current Canvas name: " + canvas.name);
 
-                //if (canvas.name == "Console_StaticCanvas")
-                //{
-                //    canvas.enabled = false;
-                //    canvas.enabled = true;
-                //}
+                if (canvas.name == "Console_StaticCanvas")
+                {
+                    //canvas.enabled = false;
+                    //canvas.enabled = true;
+                    //canvas.transform.parent = null;
+                }
 
                 if (canvas.renderMode != RenderMode.ScreenSpaceOverlay) return true;
 
