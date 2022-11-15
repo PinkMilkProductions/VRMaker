@@ -40,7 +40,7 @@ namespace VRMaker
         public static void AddSkyBox()
         {
             // ADD THE LOADED SKYBOX !!!!
-            var SceneSkybox = GameObject.Instantiate(AssetLoader.Skybox, Vector3.zeroVector, Quaternion.identityQuaternion);
+            SceneSkybox = GameObject.Instantiate(AssetLoader.Skybox, Vector3.zeroVector, Quaternion.identityQuaternion);
             SceneSkybox.transform.localScale = new Vector3(999999, 999999, 999999);
             SceneSkybox.transform.eulerAngles = new Vector3(270, 0, 0);
         }
@@ -48,9 +48,6 @@ namespace VRMaker
         public static void SwitchPOV()
         {
             Logs.WriteInfo("Entered SwitchPOV function");
-
-            // ADD A SKYBOX
-            CameraManager.AddSkyBox();
 
             Logs.WriteInfo("AddedSkyBox");
 
@@ -206,6 +203,34 @@ namespace VRMaker
 
         }
 
+        public static void HandleSkyBox()
+        {
+            if  (CameraManager.CurrentCameraMode == CameraManager.VRCameraMode.FirstPerson)
+            {
+                if (!SceneSkybox)
+                {
+                    Kingmaker.Visual.LocalMap.LocalMapArea closest = Kingmaker.Visual.LocalMap.LocalMapArea.GetClosest(Game.Instance.Player.MainCharacter.Value.GetPosition());
+
+                    if (closest.AreaPart != null)
+                    {
+                        if (!closest.AreaPart.IsIndoor)
+                        {
+                            // ADD A SKYBOX
+                            CameraManager.AddSkyBox();
+                        }
+                    }
+                }
+                
+
+            }
+            else if (SceneSkybox)
+            {
+                // DESTROY THE PREVIOUS SKYBOX
+                UnityEngine.Object.Destroy(SceneSkybox);
+            }
+
+        }
+
 
 
         public enum VRCameraMode
@@ -244,6 +269,9 @@ namespace VRMaker
 
         // FIrst person camera stuff
         public static float Turnrate = 3f;
+
+        //SKybox stuff
+        public static GameObject SceneSkybox = null;
 
     }
     

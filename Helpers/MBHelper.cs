@@ -23,6 +23,7 @@ namespace VRMaker
         {
             //Logs.WriteInfo("Update hook called");
             Controllers.Update();
+            CameraManager.HandleSkyBox();
         }
 
         public void OnCreate()
