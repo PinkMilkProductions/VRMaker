@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using Kingmaker.Assets.Console.GamepadInput;
 
 namespace VRMaker
 {
@@ -41,7 +42,7 @@ namespace VRMaker
         private static AssetBundle LoadBundle(string assetName)
         {
             var myLoadedAssetBundle =
-                AssetBundle.LoadFromFile(Path.Combine(Paths.PluginPath, Path.Combine(assetsDir, assetName)));
+                AssetBundle.LoadFromFile(Path.Combine(Plugin.gamePath, Path.Combine(assetsDir, assetName)));
 
             Logs.WriteInfo("PluginPath: " + Paths.PluginPath);
             if (myLoadedAssetBundle == null)

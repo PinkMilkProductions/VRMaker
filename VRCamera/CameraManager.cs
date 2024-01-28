@@ -243,7 +243,7 @@ namespace VRMaker
 
         //Strictly camera stuff
         public static VRCameraMode CurrentCameraMode;
-        public static float NearClipPlaneDistance = 0.01f;
+        public static float NearClipPlaneDistance = 0.1f;
         public static float FarClipPlaneDistance = 59999f;
         public static bool DisableParticles = false;
 
