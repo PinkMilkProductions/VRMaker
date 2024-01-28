@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Raicuparta/rai-manager/master/manifest.schema.json",
+  "modTitle": "VRMaker",
+  "gameTitle": "Pathfinder: Kingmaker",
+  "providers": [
+    {
+      "providerId": "steam",
+      "gameIdentifier": "640820",
+      "requireAdmin": false,
+      "gameExe": "Kingmaker.exe"
+    },
+    {
+      "providerId": "gog",
+      "gameIdentifier": "1982293831",
+      "requireAdmin": false,
+      "gameExe": "Kingmaker.exe"
+    }
+  ]
+}
