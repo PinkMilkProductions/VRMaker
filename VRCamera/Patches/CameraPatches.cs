@@ -7,6 +7,8 @@ using HarmonyLib;
 using UnityEngine;
 using UnityEngine.Profiling;
 using Kingmaker;
+using Kingmaker.AreaLogic.QuestSystem;
+using Kingmaker.Utility;
 
 
 namespace VRMaker
@@ -16,10 +18,10 @@ namespace VRMaker
     {
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Kingmaker.View.CameraRig), nameof(Kingmaker.View.CameraRig.OnEnable))]
-        private static void FixNearClipping()
+        public static void FixNearClipping()
         {
             CameraManager.ReduceNearClipping();
-            if (Plugin.HMDModel == "Vive MV")
+            if ((Plugin.HMDModel == "Vive MV") || (Plugin.HMDModel == "Meta Quest 3"))
             {
                 Camera CurrentCamera = Game.GetCamera();
                 CurrentCamera.GetComponent<Kingmaker.Visual.FogOfWar.FogOfWarScreenSpaceRenderer>().enabled = false;
@@ -127,6 +129,16 @@ namespace VRMaker
                 CameraManager.HandleDemeoCamera();
             }
         }
+
+        //[HarmonyPostfix]
+        //[HarmonyPatch(typeof(Kingmaker.View.UnitMovementAgentBase), "MoveDirection", MethodType.Getter)]
+        //private static void SetCustomMovementDirection(ref Vector2 __result)
+        //{
+        //    if (CameraManager.CurrentCameraMode == CameraManager.VRCameraMode.FirstPerson)
+        //    {
+        //        __result = Camera.main.transform.forward.To2D();
+        //    }
+        //}
 
     }
 

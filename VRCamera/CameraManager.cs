@@ -15,12 +15,6 @@ namespace VRMaker
         static CameraManager()
         {
             CurrentCameraMode = VRCameraMode.UI;
-            //Fix near plance clipping for main camera
-            if (Camera.main != null)
-            {
-                Camera.main.nearClipPlane = NearClipPlaneDistance;
-                Camera.main.farClipPlane = FarClipPlaneDistance;
-            }
 
         }
 

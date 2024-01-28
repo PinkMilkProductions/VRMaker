@@ -24,7 +24,7 @@ namespace VRMaker
             //Logs.WriteInfo("Update hook called");
             //Lazy fix for the load save menu clipping at the main menu
             if (Camera.main.nearClipPlane > 0.2f)
-                CameraManager.ReduceNearClipping();
+                CameraPatches.FixNearClipping();
             Controllers.Update();
             CameraManager.HandleSkyBox();
         }
