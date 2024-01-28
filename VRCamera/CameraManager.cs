@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Kingmaker;
 using Valve.VR;
+using DG.Tweening;
 
 namespace VRMaker
 {
@@ -55,7 +56,7 @@ namespace VRMaker
             // If we are not in firstperson
             if (CameraManager.CurrentCameraMode != CameraManager.VRCameraMode.FirstPerson)
             {
-                Logs.WriteInfo("Got past cameramod check");
+                Logs.WriteInfo("Got past cameramode check");
                 if (Game.Instance.Player.MainCharacter != null)
                 {
                     Logs.WriteInfo("Got past maincharacter exist check");
@@ -63,7 +64,8 @@ namespace VRMaker
                     VROrigin.transform.parent = null;
                     VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
 
-                    //VROrigin.transform.LookAt(Game.Instance.Player.MainCharacter.Value.OrientationDirection);
+                    VROrigin.transform.LookAt(Game.Instance.Player.MainCharacter.Value.EyePosition + Game.Instance.Player.MainCharacter.Value.OrientationDirection);
+                    VROrigin.transform.Rotate(45, 0, 0, Space.Self);
 
                     if (!OriginalCameraParent)
                     {
@@ -194,8 +196,9 @@ namespace VRMaker
                 //VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.EyePosition;
 
                 //ROTATION
-                Vector3 RotationEulers = new Vector3(0, Turnrate * RightJoystick.x, 0);
-                VROrigin.transform.Rotate(RotationEulers);
+                //Vector3 RotationEulers = new Vector3(0, Turnrate * RightJoystick.x, 0);
+                //VROrigin.transform.Rotate(RotationEulers);
+                VROrigin.transform.Rotate(0, Turnrate * RightJoystick.x, 0, Space.World);
 
                 // Movement is done via a patch
             }
