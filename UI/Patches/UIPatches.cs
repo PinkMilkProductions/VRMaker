@@ -101,5 +101,13 @@ namespace VRMaker
                     return true;
             return false;
         }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(UnityEngine.Camera), nameof(UnityEngine.Camera.WorldToScreenPoint), new[] { typeof(Vector3) })]
+        private static bool WorldUIMarkersFix(Vector3 position, ref Vector3 __result)
+        {
+            __result = position;
+            return true;
+        }
     }
 }
