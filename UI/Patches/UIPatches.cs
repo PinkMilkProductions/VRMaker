@@ -7,6 +7,7 @@ using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
 using Kingmaker;
+using Kingmaker.TurnBasedMode;
 
 namespace VRMaker
 {
@@ -107,6 +108,14 @@ namespace VRMaker
         private static bool WorldUIMarkersFix(Vector3 position, ref Vector3 __result)
         {
             __result = position;
+            return false;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Kingmaker.TurnBasedMode.PathVisualizer), nameof(Kingmaker.TurnBasedMode.PathVisualizer.UpdateVisualPath), new[] { typeof(Vector3), typeof(float), typeof(bool), typeof(int), typeof(PathVisualizer.VisualPathSettings) })]
+        private static bool LineRendererToWorldspacePatch(Kingmaker.TurnBasedMode.PathVisualizer __instance)
+        {
+            __instance.m_Renderer.useWorldSpace = true;
             return true;
         }
     }
