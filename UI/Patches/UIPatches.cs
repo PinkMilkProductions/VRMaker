@@ -105,11 +105,40 @@ namespace VRMaker
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(UnityEngine.Camera), nameof(UnityEngine.Camera.WorldToScreenPoint), new[] { typeof(Vector3) })]
-        private static bool WorldUIMarkersFix(Vector3 position, ref Vector3 __result)
+        private static bool WorldUIMarkersFixScreen(Vector3 position, ref Vector3 __result)
         {
             __result = position;
             return false;
         }
+
+
+        // Skipping the original makes the affected UI elements not show up at all.
+        //[HarmonyPostfix]
+        //[HarmonyPatch(typeof(UnityEngine.Camera), nameof(UnityEngine.Camera.WorldToViewportPoint), new[] { typeof(Vector3) })]
+        //private static void WorldUIMarkersFixViewport(Vector3 position, ref Vector3 __result)
+        //{
+        //    __result = position;
+        //}
+
+        // THIS WORKS FOR THE CHARACTER MARKERS, PUTS THEM IN A 3D POSITION INDEPENDANT OF THE CONSOLE_STATICCANVAS
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Kingmaker.UI.PointMarker.PointMarker), nameof(Kingmaker.UI.PointMarker.PointMarker.CalculateMarkerPosition))]
+        private static void CharacterMarkersToWorld(Kingmaker.UI.PointMarker.PointMarker __instance)
+        {
+            __instance.transform.position = __instance.Character.Position;
+        }
+
+        // Overtips are the little icons like exit Map or Exit Area
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Kingmaker.UI.Overtip.OvertipControllerBase), nameof(Kingmaker.UI.Overtip.OvertipControllerBase.Update))]
+        private static void OvertipsToWorld(Kingmaker.UI.Overtip.OvertipControllerBase __instance)
+        {
+            if (__instance.MapObject.View.transform)
+            {
+                __instance.transform.position = __instance.MapObject.View.transform.position + Vector3.up * 2f;
+            }
+        }
+
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Kingmaker.TurnBasedMode.PathVisualizer), nameof(Kingmaker.TurnBasedMode.PathVisualizer.UpdateVisualPath), new[] { typeof(Vector3), typeof(float), typeof(bool), typeof(int), typeof(PathVisualizer.VisualPathSettings) })]
