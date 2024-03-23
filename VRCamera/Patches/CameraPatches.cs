@@ -9,6 +9,8 @@ using UnityEngine.Profiling;
 using Kingmaker;
 using Kingmaker.AreaLogic.QuestSystem;
 using Kingmaker.Utility;
+using Kingmaker.UI.Overtip;
+using Kingmaker.UI.MapObjectOvertip;
 
 
 namespace VRMaker
@@ -76,7 +78,7 @@ namespace VRMaker
                 }
                 Kingmaker.Visual.Particles.FxHelper.DestroyAll();
             }
-            
+
         }
 
         [HarmonyPostfix]

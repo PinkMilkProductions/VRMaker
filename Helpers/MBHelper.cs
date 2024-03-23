@@ -27,6 +27,7 @@ namespace VRMaker
                 CameraPatches.FixNearClipping();
             Controllers.Update();
             CameraManager.HandleSkyBox();
+            UIManager.UpdateOvertips();
         }
 
         public void OnCreate()
@@ -34,5 +35,7 @@ namespace VRMaker
             // Test
             Controllers.Init();
         }
+
+        public Kingmaker.UI.Overtip.OvertipComponent [] Overtips = [];
     }
 }
