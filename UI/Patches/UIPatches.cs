@@ -112,15 +112,6 @@ namespace VRMaker
             return false;
         }
 
-
-        // Skipping the original makes the affected UI elements not show up at all.
-        //[HarmonyPostfix]
-        //[HarmonyPatch(typeof(UnityEngine.Camera), nameof(UnityEngine.Camera.WorldToViewportPoint), new[] { typeof(Vector3) })]
-        //private static void WorldUIMarkersFixViewport(Vector3 position, ref Vector3 __result)
-        //{
-        //    __result = position;
-        //}
-
         // THIS WORKS FOR THE CHARACTER MARKERS, PUTS THEM IN A 3D POSITION INDEPENDANT OF THE CONSOLE_STATICCANVAS
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Kingmaker.UI.PointMarker.PointMarker), nameof(Kingmaker.UI.PointMarker.PointMarker.CalculateMarkerPosition))]
@@ -129,47 +120,38 @@ namespace VRMaker
             __instance.transform.position = __instance.Character.Position;
         }
 
-        //// Overtips are the little icons like exit Map or Exit Area
-        //[HarmonyPostfix]
-        //[HarmonyPatch(typeof(Kingmaker.UI.Overtip.OvertipControllerBase), nameof(Kingmaker.UI.Overtip.OvertipControllerBase.Update))]
-        //private static void OvertipsToWorld(Kingmaker.UI.Overtip.OvertipControllerBase __instance)
-        //{
-        //    if (__instance.MapObject.View)
-        //    {
-        //        RectTransform rectTransform = (RectTransform)__instance.transform;
-        //        rectTransform.anchorMax = Vector2.oneVector * 99999;
-        //        rectTransform.anchorMin = Vector2.oneVector * (-99999);
-        //        rectTransform.anchoredPosition3D = __instance.MapObject.View.transform.position + Vector3.up * 2f;
-        //        __instance.transform.position = __instance.MapObject.View.transform.position + Vector3.up * 2f;
-        //        Logs.WriteInfo("Overtip " + __instance.name + " set to position: " + __instance.transform.position);
-        //    }
-        //    else
-        //    {
-        //        Logs.WriteInfo("No MapObject.View for OvertipControllerBase: " + __instance.Name);
-        //    }
-
-        //}
-
-        //// Overtips are the little icons like exit Map or Exit Area. This function here dalways seems to just give me an empty list.
-        //[HarmonyPostfix]
-        //[HarmonyPatch(typeof(Kingmaker.UI.Overtip.OvertipComponent), nameof(Kingmaker.UI.Overtip.OvertipComponent.Initialize))]
-        //private static void OnOvertipSpawned(Kingmaker.UI.Overtip.OvertipComponent __instance)
-        //{
-        //    Plugin.MyHelper.Overtips.AddItem<Kingmaker.UI.Overtip.OvertipComponent>(__instance);
-        //}
-
-        // Overtips are the little icons like exit Map or Exit Area, see boox notes.
+        // THIS WORKS FOR OVERTIPS, PUTS THEM IN A 3D POSITION INDEPENDANT OF THE CONSOLE_DYNAMICCANVAS
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Kingmaker.UI._ConsoleUI.Overtips.OvertipViewBase), nameof(Kingmaker.UI._ConsoleUI.Overtips.OvertipViewBase.UpdatePosition))]
         private static void OvertipsToWorld(Kingmaker.UI._ConsoleUI.Overtips.OvertipViewBase __instance)
         {
-            Logs.WriteInfo("Overtip Hook Triggered !!!");
             if (__instance.ViewModel.EntityPosition != null)
             {
                 __instance.transform.position = __instance.ViewModel.EntityPosition;
-                Logs.WriteInfo("Overtip " + __instance.name + " set to position: " + __instance.transform.position);
+                if (CameraManager.CurrentCameraMode == CameraManager.VRCameraMode.FirstPerson)
+                    __instance.transform.localScale = Vector3.one * 5;
+                else
+                    __instance.transform.localScale = Vector3.one * 20;
             }
 
+        }
+
+        // THIS WORKS FOR THE CHARACTER MARKERS, PUTS THEM IN A 3D POSITION INDEPENDANT OF THE CONSOLE_STATICCANVAS
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Kingmaker.TurnBasedMode.PathVisualizer), nameof(Kingmaker.TurnBasedMode.PathVisualizer.Update))]
+        private static void FixCombatPathRendering(Kingmaker.TurnBasedMode.PathVisualizer __instance)
+        {
+            __instance.m_Renderer.material.shader = Shader.Find("Hidden/Internal-Colored");
+            if (CameraManager.CurrentCameraMode == CameraManager.VRCameraMode.FirstPerson)
+            {
+                __instance.m_Renderer.startWidth = 25.0f;
+                __instance.m_Renderer.endWidth = 25.0f;
+            }
+            else
+            {
+                __instance.m_Renderer.startWidth = 100.0f;
+                __instance.m_Renderer.endWidth = 100.0f;
+            }
         }
 
 
