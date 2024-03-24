@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using Kingmaker;
 using Kingmaker.TurnBasedMode;
 using Kingmaker.Utility;
+using Rewired.ComponentControls.Effects;
 
 namespace VRMaker
 {
@@ -136,7 +137,7 @@ namespace VRMaker
 
         }
 
-        // THIS WORKS FOR THE CHARACTER MARKERS, PUTS THEM IN A 3D POSITION INDEPENDANT OF THE CONSOLE_STATICCANVAS
+        // HOLY SHIT THIS FIXES THE COMBAT PATH RENDERING
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Kingmaker.TurnBasedMode.PathVisualizer), nameof(Kingmaker.TurnBasedMode.PathVisualizer.Update))]
         private static void FixCombatPathRendering(Kingmaker.TurnBasedMode.PathVisualizer __instance)
@@ -152,6 +153,28 @@ namespace VRMaker
                 __instance.m_Renderer.startWidth = 100.0f;
                 __instance.m_Renderer.endWidth = 100.0f;
             }
+        }
+
+        // Camera patch specifically for controlling the Turnbased Combat Movement
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(UnityEngine.Camera), nameof(UnityEngine.Camera.ScreenPointToRay), new[] { typeof(Vector3)})]
+        private static bool VRMouseRaycast(ref UnityEngine.Ray __result)
+        {
+
+            if (CameraManager.CurrentCameraMode == CameraManager.VRCameraMode.FirstPerson)
+            {
+                Transform dummytransform = CameraManager.RightHand.transform;
+                dummytransform.Rotate(0, 45, 0, Space.Self);
+                //dummytransform.Rotate(0, 90, 0, Space.Self);
+                __result = new Ray(CameraManager.RightHand.transform.position, dummytransform.forward);
+                return false;
+            }
+            else
+            {
+                __result = new Ray(Game.GetCamera().transform.position, Game.GetCamera().transform.forward);
+                return false;
+            }
+
         }
 
 
