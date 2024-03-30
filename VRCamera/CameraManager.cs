@@ -7,6 +7,7 @@ using UnityEngine;
 using Kingmaker;
 using Valve.VR;
 using DG.Tweening;
+using TurnBased.Controllers;
 
 namespace VRMaker
 {
@@ -184,10 +185,36 @@ namespace VRMaker
         {
             if (CameraManager.CurrentCameraMode == CameraManager.VRCameraMode.FirstPerson)
             {
+                //Determine character the first person
+                Kingmaker.EntitySystem.Entities.UnitEntityData Firstperson;
+
+                if (Game.Instance.Player.IsInCombat)
+                {
+                    TurnController currentTurn = Game.Instance.TurnBasedCombatController.CurrentTurn;
+                    if (currentTurn == null)
+                    {
+                        Firstperson = Kingmaker.Game.Instance.Player.GetCharactersList(Player.CharactersList.ActiveUnits).FirstOrDefault();
+                    }
+                    else
+                    {
+                        if (currentTurn.Unit.IsPlayerFaction)
+                            Firstperson = currentTurn.Unit;
+                        else
+                            Firstperson = Kingmaker.Game.Instance.Player.GetCharactersList(Player.CharactersList.ActiveUnits).FirstOrDefault();
+                    }
+                    
+                }
+                else
+                {
+                    Firstperson = Kingmaker.Game.Instance.Player.GetCharactersList(Player.CharactersList.ActiveUnits).FirstOrDefault();
+                }
+
                 // POSITION
                 // Attach our origin to the Main Character's (this function gets called every tick)
-                CameraManager.VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
+                // CameraManager.VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
                 //VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.EyePosition;
+
+                CameraManager.VROrigin.transform.position = Firstperson.Position;
 
                 //ROTATION
                 //Vector3 RotationEulers = new Vector3(0, Turnrate * RightJoystick.x, 0);
