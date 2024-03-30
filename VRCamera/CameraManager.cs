@@ -200,6 +200,14 @@ namespace VRMaker
 
         }
 
+        public static Vector3 GetRightHandForward ()
+        {
+            Quaternion dummyrotation = RightHand.transform.rotation;
+            // 45 degrees for Oculus
+            dummyrotation = dummyrotation * Quaternion.Euler(45, 0, 0);
+            return dummyrotation * Vector3.forward;
+        }
+
         public static void HandleSkyBox()
         {
             if  (CameraManager.CurrentCameraMode == CameraManager.VRCameraMode.FirstPerson)

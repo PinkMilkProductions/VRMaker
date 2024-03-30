@@ -161,11 +161,9 @@ namespace VRMaker
         private static bool VRMouseRaycast(ref UnityEngine.Ray __result)
         {
 
-            if (CameraManager.CurrentCameraMode == CameraManager.VRCameraMode.FirstPerson)
+            if (CameraManager.RightHand)
             {
-                Quaternion dummyrotation = CameraManager.RightHand.transform.rotation;
-                dummyrotation = dummyrotation* Quaternion.Euler(45, 0, 0);
-                __result = new Ray(CameraManager.RightHand.transform.position, dummyrotation * Vector3.forward);
+                __result = new Ray(CameraManager.RightHand.transform.position, CameraManager.GetRightHandForward());
                 return false;
             }
             else
