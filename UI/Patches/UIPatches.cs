@@ -163,10 +163,9 @@ namespace VRMaker
 
             if (CameraManager.CurrentCameraMode == CameraManager.VRCameraMode.FirstPerson)
             {
-                Transform dummytransform = CameraManager.RightHand.transform;
-                dummytransform.Rotate(0, 45, 0, Space.Self);
-                //dummytransform.Rotate(0, 90, 0, Space.Self);
-                __result = new Ray(CameraManager.RightHand.transform.position, dummytransform.forward);
+                Quaternion dummyrotation = CameraManager.RightHand.transform.rotation;
+                dummyrotation = dummyrotation* Quaternion.Euler(45, 0, 0);
+                __result = new Ray(CameraManager.RightHand.transform.position, dummyrotation * Vector3.forward);
                 return false;
             }
             else
