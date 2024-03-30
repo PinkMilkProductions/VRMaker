@@ -55,11 +55,13 @@ namespace VRMaker
                 if (Game.Instance.Player.MainCharacter != null)
                 {
                     Logs.WriteInfo("Got past maincharacter exist check");
+                    //Determine the character we want to switch to
+                    Kingmaker.EntitySystem.Entities.UnitEntityData FirstPerson = DetermineFirstPerson();
                     // switch to first person
                     VROrigin.transform.parent = null;
-                    VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
+                    VROrigin.transform.position = FirstPerson.GetPosition();
 
-                    VROrigin.transform.LookAt(Game.Instance.Player.MainCharacter.Value.EyePosition + Game.Instance.Player.MainCharacter.Value.OrientationDirection);
+                    VROrigin.transform.LookAt(FirstPerson.EyePosition + FirstPerson.OrientationDirection);
                     VROrigin.transform.Rotate(45, 0, 0, Space.Self);
 
                     if (!OriginalCameraParent)
@@ -78,6 +80,16 @@ namespace VRMaker
             }
             else
             {
+                // UnHide the previous firstperson Entity
+                if (PrevFirstPerson != null)
+                {
+                    foreach (Renderer rend in PrevFirstPerson.View.Renderers)
+                    {
+                        rend.enabled = true;
+                    }
+                }
+
+
                 VROrigin.transform.position = OriginalCameraParent.position;
                 VROrigin.transform.rotation = OriginalCameraParent.rotation;
                 VROrigin.transform.localScale = OriginalCameraParent.localScale;
@@ -185,49 +197,62 @@ namespace VRMaker
         {
             if (CameraManager.CurrentCameraMode == CameraManager.VRCameraMode.FirstPerson)
             {
-                //Determine character the first person
-                Kingmaker.EntitySystem.Entities.UnitEntityData Firstperson;
-
-                if (Game.Instance.Player.IsInCombat)
-                {
-                    TurnController currentTurn = Game.Instance.TurnBasedCombatController.CurrentTurn;
-                    if (currentTurn == null)
-                    {
-                        Firstperson = Kingmaker.Game.Instance.Player.GetCharactersList(Player.CharactersList.ActiveUnits).FirstOrDefault();
-                    }
-                    else
-                    {
-                        if (currentTurn.Unit.IsPlayerFaction)
-                            Firstperson = currentTurn.Unit;
-                        else
-                            Firstperson = Kingmaker.Game.Instance.Player.GetCharactersList(Player.CharactersList.ActiveUnits).FirstOrDefault();
-                    }
-                    
-                }
-                else
-                {
-                    Firstperson = Kingmaker.Game.Instance.Player.GetCharactersList(Player.CharactersList.ActiveUnits).FirstOrDefault();
-                }
+                Kingmaker.EntitySystem.Entities.UnitEntityData FirstPerson = DetermineFirstPerson();
 
                 // POSITION
                 // Attach our origin to the Main Character's (this function gets called every tick)
                 // CameraManager.VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.GetPosition();
                 //VROrigin.transform.position = Game.Instance.Player.MainCharacter.Value.EyePosition;
 
-                CameraManager.VROrigin.transform.position = Firstperson.Position;
+                CameraManager.VROrigin.transform.position = FirstPerson.Position;
 
                 //ROTATION
                 //Vector3 RotationEulers = new Vector3(0, Turnrate * RightJoystick.x, 0);
                 //VROrigin.transform.Rotate(RotationEulers);
                 VROrigin.transform.Rotate(0, Turnrate * RightJoystick.x, 0, Space.World);
 
-                // Movement is done via a patch
+                if (PrevFirstPerson != FirstPerson)
+                {
+                    // Hide the firstperson Entity
+                    foreach (Renderer rend in FirstPerson.View.Renderers)
+                    {
+                        rend.enabled = false;
+                    }
+                    if (PrevFirstPerson != null)
+                    {
+                        // UnHide the previous firstperson Entity
+                        foreach (Renderer rend in PrevFirstPerson.View.Renderers)
+                        {
+                            rend.enabled = true;
+                        }
+                    }
+
+                }
+
+                PrevFirstPerson = FirstPerson;
+                //this stuff might be interesting
+                //Firstperson.IsCurrentUnit
             }
-            
+
 
         }
 
-        public static Vector3 GetRightHandForward ()
+        public static Kingmaker.EntitySystem.Entities.UnitEntityData DetermineFirstPerson()
+        {
+            //Determine the first person character
+            if (Game.Instance.Player.IsInCombat)
+            {
+                TurnController currentTurn = Game.Instance.TurnBasedCombatController.CurrentTurn;
+                if (currentTurn == null)
+                    return Kingmaker.Game.Instance.Player.GetCharactersList(Player.CharactersList.ActiveUnits).FirstOrDefault();
+                if (currentTurn.Unit.IsPlayerFaction)
+                    return currentTurn.Unit;
+            }
+            return Kingmaker.Game.Instance.Player.GetCharactersList(Player.CharactersList.ActiveUnits).FirstOrDefault();
+        }
+
+
+            public static Vector3 GetRightHandForward ()
         {
             Quaternion dummyrotation = RightHand.transform.rotation;
             // 45 degrees for Oculus
@@ -284,6 +309,7 @@ namespace VRMaker
         public static GameObject VROrigin = new GameObject();
         public static GameObject LeftHand = null;
         public static GameObject RightHand = null;
+        public static Kingmaker.EntitySystem.Entities.UnitEntityData PrevFirstPerson = null;
 
         // VR Input stuff
         public static bool RightHandGrab = false;
