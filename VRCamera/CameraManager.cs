@@ -87,6 +87,8 @@ namespace VRMaker
                     {
                         rend.enabled = true;
                     }
+                    // Reset the Previous First Person, otherwise he won't hide when we switch back.
+                    PrevFirstPerson = null;
                 }
 
 

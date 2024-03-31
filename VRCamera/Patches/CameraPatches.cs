@@ -79,6 +79,13 @@ namespace VRMaker
                 Kingmaker.Visual.Particles.FxHelper.DestroyAll();
             }
 
+            CameraManager.ReduceNearClipping();
+            if ((Plugin.HMDModel == "Vive MV") || (Plugin.HMDModel == "Meta Quest 3"))
+            {
+                Camera CurrentCamera = Game.GetCamera();
+                CurrentCamera.GetComponent<Kingmaker.Visual.FogOfWar.FogOfWarScreenSpaceRenderer>().enabled = false;
+            }
+
         }
 
         [HarmonyPostfix]
