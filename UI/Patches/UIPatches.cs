@@ -10,6 +10,7 @@ using Kingmaker;
 using Kingmaker.TurnBasedMode;
 using Kingmaker.Utility;
 using Rewired.ComponentControls.Effects;
+using Kingmaker.Visual;
 
 namespace VRMaker
 {
@@ -205,7 +206,48 @@ namespace VRMaker
             //__instance.m_Window.localPosition = Vector3.zero;
             //__instance.m_Window.localScale = Vector3.one;
             //__instance.m_Window.localRotation = Quaternion.identity;
-            return false;
+            return true;
+        }
+
+        // Fancy tweening hook that doesn't work yet
+        // Attempt to fix the Kingdom Events UI Camera moving to the leaders
+        //[HarmonyPostfix]
+        //[HarmonyPatch(typeof(Kingmaker.Controllers.KingdomCameraController), nameof(Kingmaker.Controllers.KingdomCameraController.StartCameraTween), new[] { typeof(Transform)})]
+        //private static void FixKingdomLeadersCameraPanning(Transform anchor, Kingmaker.Controllers.KingdomCameraController __instance)
+        //{
+        //    Logs.WriteInfo("CameraPanning Hook activated!");
+        //    if (Game.GetCamera().transform.parent != CameraManager.VROrigin.transform)
+        //    {
+        //        Logs.WriteInfo("VROrigin wasn't the parent of the tweening camera, setting it now...");
+        //        CameraManager.VROrigin.transform.position = Game.GetCamera().transform.parent.position;
+        //        CameraManager.VROrigin.transform.rotation = Game.GetCamera().transform.parent.rotation;
+        //        CameraManager.VROrigin.transform.localScale = Game.GetCamera().transform.parent.localScale;
+        //        Game.GetCamera().transform.parent = CameraManager.VROrigin.transform;
+        //    }
+        //    __instance.m_CurrentTween = anchor.GetComponent<CameraTweenAnchor>();
+        //    if (__instance.m_CurrentTween)
+        //    {
+        //        Logs.WriteInfo("CameraPanning Hook Tweening check succesful!");
+        //        __instance.m_CurrentTween.StartTween(CameraManager.VROrigin.transform, __instance.m_PrevTween);
+        //    }
+        //}
+
+        // Attempt to fix the Kingdom Events UI Camera moving to the leaders
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Kingmaker.Controllers.KingdomCameraController), nameof(Kingmaker.Controllers.KingdomCameraController.StartCameraTween), new[] { typeof(Transform) })]
+        private static void FixKingdomLeadersCameraPanning(Transform anchor, Kingmaker.Controllers.KingdomCameraController __instance)
+        {
+            Logs.WriteInfo("CameraPanning Hook activated!");
+            if (Game.GetCamera().transform.parent != CameraManager.VROrigin.transform)
+            {
+                Logs.WriteInfo("VROrigin wasn't the parent of the tweening camera, setting it now...");
+                CameraManager.VROrigin.transform.position = Game.GetCamera().transform.parent.position;
+                CameraManager.VROrigin.transform.rotation = Game.GetCamera().transform.parent.rotation;
+                CameraManager.VROrigin.transform.localScale = Game.GetCamera().transform.parent.localScale;
+                Game.GetCamera().transform.parent = CameraManager.VROrigin.transform;
+            }
+            CameraManager.VROrigin.transform.position = anchor.position;
+            CameraManager.VROrigin.transform.rotation.SetEulerAngles(0, anchor.rotation.eulerAngles.y, 0);
         }
     }
 }
