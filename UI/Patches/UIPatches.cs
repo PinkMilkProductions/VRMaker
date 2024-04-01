@@ -22,13 +22,15 @@ namespace VRMaker
             "Camera" // Disposable camera.
             //"Canvas", // This is used for the loading screen, do not disable
             //"Console_StaticCanvas" // This is the main ingame HUD that behaves weirdly with our code
+            
         };
 
         private static readonly string[] canvasesToIgnore =
         {
             "com.sinai.unityexplorer_Root", // UnityExplorer.
             "com.sinai.unityexplorer.MouseInspector_Root", // UnityExplorer.
-            "ExplorerCanvas"
+            "ExplorerCanvas",
+            //"LoadingScreen"  // The LoadingScreen
         };
 
         [HarmonyPrefix]
@@ -39,7 +41,8 @@ namespace VRMaker
             {
                 // This check for !Camera.main needs to stay here,
                 // because without it the map texture will some times be broken. Dunno why.
-                //if (!Camera.main || IsCanvasToIgnore(__instance.name)) return;
+                //if (!Camera.main || IsCanvasToIgnore(__instance.name)) return true;
+                float UIScale = 0.00045f;
 
                 if (!Plugin.MyHelper)
                     Plugin.MyHelper = MBHelper.Create();
@@ -62,6 +65,10 @@ namespace VRMaker
                     //canvas.enabled = true;
                     //canvas.transform.parent = null;
                 }
+                if (canvas.name == "LoadingScreen")
+                {
+                    UIScale = 10;
+                }
 
                 if (canvas.renderMode != RenderMode.ScreenSpaceOverlay) return true;
 
@@ -75,7 +82,7 @@ namespace VRMaker
                 StaticUiTarget MyUiTarget = StaticUiTarget.Create(Plugin.MyHelper.gameObject.transform);
                 //MyUiTarget.SetUp(Kingmaker.Game.GetCamera());
                 MyUiTarget.SetUp(Kingmaker.Game.GetCamera());
-                AttachedUi.Create<StaticUi>(canvas, MyUiTarget.TargetTransform, 0.00045f);
+                AttachedUi.Create<StaticUi>(canvas, MyUiTarget.TargetTransform, UIScale);
 
                 return false;
 
@@ -181,6 +188,24 @@ namespace VRMaker
         {
             __instance.m_Renderer.useWorldSpace = true;
             return true;
+        }
+
+        // Attempt to fix the Kingdom Events UI
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Kingmaker.UI._ConsoleUI.Kingdom.Events.KingdomEventDetailsView), nameof(Kingmaker.UI._ConsoleUI.Kingdom.Events.KingdomEventDetailsView.PlayAnimation))]
+        private static bool FixKingdomEventUI(bool state, Kingmaker.UI._ConsoleUI.Kingdom.Events.KingdomEventDetailsView __instance)
+        {
+            __instance.gameObject.SetActive(state);
+            if (state)
+            {
+                Canvas Console_StaticCanvas = GameObject.Find("Console_StaticCanvas").GetComponent<Canvas>();
+                Console_StaticCanvas.transform.localPosition = Vector3.zero;
+                Console_StaticCanvas.transform.localScale = Vector3.one;
+            }
+            //__instance.m_Window.localPosition = Vector3.zero;
+            //__instance.m_Window.localScale = Vector3.one;
+            //__instance.m_Window.localRotation = Quaternion.identity;
+            return false;
         }
     }
 }

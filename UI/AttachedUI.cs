@@ -40,7 +40,7 @@ namespace VRMaker
 
             if (MyCanvas)
             {
-                MyCanvas.transform.parent = null;
+                //MyCanvas.transform.parent = null;
             }
 
             UpdateTransform();
@@ -64,7 +64,10 @@ namespace VRMaker
 
             transform.position = targetTransform.position;
             //transform.rotation = targetTransform.rotation;
-            transform.rotation = Game.GetCamera().transform.rotation;
+            if (!Game.GetCamera())
+                transform.rotation = Quaternion.identity;
+            else
+                transform.rotation = Game.GetCamera().transform.rotation;
 
             //if (MyCanvas)
             //{
