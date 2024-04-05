@@ -22,6 +22,9 @@ namespace VRMaker
         protected virtual void Update()
         {
             //Logs.WriteInfo("Update hook called");
+            // Used for determining a transform for the loadingscreen when there is no camera.
+            if (Kingmaker.Game.GetCamera())
+                Plugin.MyHelper.transform.position = Kingmaker.Game.GetCamera().transform.position + Kingmaker.Game.GetCamera().transform.forward;
             //Lazy fix for the load save menu clipping at the main menu
             if (Camera.main.nearClipPlane > 0.2f)
                 CameraPatches.FixNearClipping();

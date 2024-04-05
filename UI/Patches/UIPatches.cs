@@ -11,6 +11,8 @@ using Kingmaker.TurnBasedMode;
 using Kingmaker.Utility;
 using Rewired.ComponentControls.Effects;
 using Kingmaker.Visual;
+using System.Security.Cryptography.Xml;
+using Kingmaker.UI;
 
 namespace VRMaker
 {
@@ -31,7 +33,7 @@ namespace VRMaker
             "com.sinai.unityexplorer_Root", // UnityExplorer.
             "com.sinai.unityexplorer.MouseInspector_Root", // UnityExplorer.
             "ExplorerCanvas",
-            //"LoadingScreen"  // The LoadingScreen
+            "LoadingScreen"  // The LoadingScreen
         };
 
         [HarmonyPrefix]
@@ -43,7 +45,11 @@ namespace VRMaker
                 // This check for !Camera.main needs to stay here,
                 // because without it the map texture will some times be broken. Dunno why.
                 //if (!Camera.main || IsCanvasToIgnore(__instance.name)) return true;
-                float UIScale = 0.00045f;
+                float UIScale;
+                if (!Camera.main)
+                    UIScale = 0.001f; //This is the bigger one, for the loading screen.
+                else
+                    UIScale = 0.00045f; //This is the working one, but maybe too tiny for the loadingscreen?
 
                 if (!Plugin.MyHelper)
                     Plugin.MyHelper = MBHelper.Create();
@@ -57,7 +63,7 @@ namespace VRMaker
                     canvas.enabled = false;
                     return true;
                 }
-
+                Logs.WriteInfo("Current UICanvas name: " + __instance.name);
                 Logs.WriteInfo("Current Canvas name: " + canvas.name);
 
                 if (canvas.name == "Console_StaticCanvas")
@@ -65,10 +71,6 @@ namespace VRMaker
                     //canvas.enabled = false;
                     //canvas.enabled = true;
                     //canvas.transform.parent = null;
-                }
-                if (canvas.name == "LoadingScreen")
-                {
-                    UIScale = 10;
                 }
 
                 if (canvas.renderMode != RenderMode.ScreenSpaceOverlay) return true;
@@ -81,7 +83,6 @@ namespace VRMaker
                 //    AttachedUi.Create<InteractiveUi>(canvas, StageInstance.GetInteractiveUiTarget(), 0.002f);
                 //else
                 StaticUiTarget MyUiTarget = StaticUiTarget.Create(Plugin.MyHelper.gameObject.transform);
-                //MyUiTarget.SetUp(Kingmaker.Game.GetCamera());
                 MyUiTarget.SetUp(Kingmaker.Game.GetCamera());
                 AttachedUi.Create<StaticUi>(canvas, MyUiTarget.TargetTransform, UIScale);
 
@@ -200,7 +201,7 @@ namespace VRMaker
             if (state)
             {
                 Canvas Console_StaticCanvas = GameObject.Find("Console_StaticCanvas").GetComponent<Canvas>();
-                Console_StaticCanvas.transform.localPosition = Vector3.zero;
+                Console_StaticCanvas.transform.localPosition = new Vector3(0, 0, -1);
                 Console_StaticCanvas.transform.localScale = Vector3.one;
             }
             //__instance.m_Window.localPosition = Vector3.zero;
@@ -234,8 +235,8 @@ namespace VRMaker
 
         // Attempt to fix the Kingdom Events UI Camera moving to the leaders
         [HarmonyPostfix]
-        [HarmonyPatch(typeof(Kingmaker.Controllers.KingdomCameraController), nameof(Kingmaker.Controllers.KingdomCameraController.StartCameraTween), new[] { typeof(Transform) })]
-        private static void FixKingdomLeadersCameraPanning(Transform anchor, Kingmaker.Controllers.KingdomCameraController __instance)
+        [HarmonyPatch(typeof(Kingmaker.Controllers.KingdomCameraController), nameof(Kingmaker.Controllers.KingdomCameraController.StartCameraTween), new[] { typeof(UnityEngine.Transform) })]
+        private static void FixKingdomLeadersCameraPanning(UnityEngine.Transform anchor, Kingmaker.Controllers.KingdomCameraController __instance)
         {
             Logs.WriteInfo("CameraPanning Hook activated!");
             if (Game.GetCamera().transform.parent != CameraManager.VROrigin.transform)
@@ -247,7 +248,25 @@ namespace VRMaker
                 Game.GetCamera().transform.parent = CameraManager.VROrigin.transform;
             }
             CameraManager.VROrigin.transform.position = anchor.position;
-            CameraManager.VROrigin.transform.rotation.SetEulerAngles(0, anchor.rotation.eulerAngles.y, 0);
+            CameraManager.VROrigin.transform.rotation.SetEulerAngles(0, anchor.rotation.eulerAngles.y, anchor.rotation.eulerAngles.z);
         }
+
+        //// Tries to fix the loading screen being really distant and tiny
+        //[HarmonyPostfix]
+        //[HarmonyPatch(typeof(Kingmaker.UI.LoadingScreen.LoadingScreen), nameof(Kingmaker.UI.LoadingScreen.LoadingScreen.Update))]
+        //private static void FixLoadingscreenTransform(Kingmaker.UI.LoadingScreen.LoadingScreen __instance)
+        //{
+        //    Logs.WriteInfo("Loadingscreen Update() Hook called");
+        //    //UICanvas uicanv = __instance.GetComponent<UICanvas>();
+        //    //if (uicanv == null)
+        //    //    Logs.WriteInfo("No Loadingscreen uicanv found :( ");
+        //    Canvas MyLoadingScreen = __instance.GetComponent<Canvas>();
+        //    if (MyLoadingScreen == null)
+        //        Logs.WriteInfo("No Loadingscreen canvas found :( ");
+        //    MyLoadingScreen.renderMode = RenderMode.WorldSpace;
+        //    MyLoadingScreen.transform.localScale = Vector3.one * 0.05f;
+        //    MyLoadingScreen.transform.position = Game.GetCamera().transform.position + Game.GetCamera().transform.forward;
+        //    MyLoadingScreen.transform.rotation = Game.GetCamera().transform.rotation;
+        //}
     }
 }
